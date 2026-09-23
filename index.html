@@ -1186,46 +1186,8 @@ function sell(itemName) {
     updateGame();
 
 }
-
-/* ---------- TRAVEL ---------- */
-
-function openTravel() {
-
-    let html = `
-        <h2>TRAVEL</h2>
-        <p>Choose your next district.</p>
-        <div class="location-list">
-    `;
-
-    LOCATIONS.forEach(city => {
-
-        city.districts.forEach(district => {
-
-            const destination = {
-                country: city.country,
-                city: city.city,
-                district: district
-            };
-
-            html += `
-                <button onclick='travelTo(${JSON.stringify(destination)})'>
-                    ${city.city}<br>
-                    <small>${district}</small>
-                </button>
-            `;
-
-        });
-
-    });
-
-    html += `
-        </div>
-        <button onclick="closeModal()">CLOSE</button>
-    `;
-
-    openModal(html);
-
-}
+    
+/*---------TRAVEL-------*/
 
 function travelTo(destination) {
 
@@ -1296,9 +1258,10 @@ function travelTo(destination) {
 
     }
 
-    checkDay();
-
+    checkDay():
 }
+        
+
 
 /* ---------- DAY SYSTEM ---------- */
 
