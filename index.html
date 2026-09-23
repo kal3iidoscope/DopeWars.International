@@ -473,9 +473,7 @@ label {
                     🏥 HOSPITAL
                 </button>
 
-                <button onclick="randomEvent(true)">
-                    🎲 EVENT
-                </button>
+                
 
             </div>
 
@@ -551,6 +549,7 @@ const LOCATIONS = [
             "Ford City",
             "Riverside",
             "West End"
+            "East End"
         ]
     },
 
@@ -566,6 +565,7 @@ const LOCATIONS = [
         ]
     },
 
+    
     {
         country: "Canada",
         city: "Vancouver",
@@ -575,6 +575,19 @@ const LOCATIONS = [
             "Kitsilano",
             "Commercial Drive",
             "Waterfront"
+        
+        ]
+    },
+    {
+        country: "Canada",
+        city: "Vancouver Island",
+        districts: [
+            "Downtown",
+            "Sooke",
+            "Langford",
+            "Jordan River",
+            "Campbell River"
+        
         ]
     },
 
@@ -754,49 +767,112 @@ const ITEMS = [
     {
         name: "Weed",
         min: 80,
-        max: 350
+        max: 850
     },
     {
         name: "Hash",
         min: 150,
-        max: 600
+        max: 6000
     },
+{
+    name: "Acid",
+    min: 113,
+    max: 8000
+},
+{
+    name: "Cocaine",
+    min: 1216,
+    max: 90000
+},
+{
+    name: "Hashish",
+    min: 23,
+    max: 1203
+},
+{
+    name: "Heroin",
+    min: 1279,
+    max: 100000
+},
+{
+    name: "Ludes",
+    min: 10,
+    max: 100
+},
+{
+    name: "MDA",
+    min: 96,
+    max: 6896
+},
+{
+    name: "Opium",
+    min: 692,
+    max: 100,000
+},
+{
+    name: "PCP",
+    min: 407,
+    max: 10000
+},
+{
+    name: "Peyote",
+    min: 224,
+    max: 2240
+},
+{
+    name: "Fentanyl",
+    min: 4500,
+    max: 18000
+},
+{
+    name: "GHB",
+    min: 150,
+    max: 7500
+},
+{
+    name: "Viagra",
+    min: 40,
+    max: 250
+},
+{
+    name: "Meth",
+    min: 800,
+    max: 4500
+},
+{
+    name: "Ketamine",
+    min: 300,
+    max: 18000
+},
+{
+    name: "Xanax",
+    min: 50,
+    max: 400
+},
+{
+    name: "Ecstasy",
+    min: 400,
+    max: 5000
+},
+{
+    name: "Crack",
+    min: 1200,
+    max: 65000
+},
+{
+    name: "DMT",
+    min: 900,
+    max: 7000
+},
+    
     {
-        name: "Pills",
-        min: 200,
-        max: 900
-    },
-    {
-        name: "Coke",
-        min: 600,
-        max: 2500
-    },
-    {
-        name: "Heroin",
-        min: 800,
-        max: 3500
-    },
-    {
-        name: "Acid",
-        min: 250,
-        max: 1200
-    },
-    {
-        name: "Speed",
-        min: 150,
-        max: 750
-    },
-    {
-        name: "Mushrooms",
-        min: 100,
-        max: 500
-    }
-];
+    
 
 /* ---------- GAME STATE ---------- */
 
 let game = null;
 
+        
 function newGameState(name, length, location) {
 
     return {
@@ -1371,272 +1447,400 @@ function busted() {
 
     updateGame();
 
-}
+    {
 
-/* ---------- RANDOM EVENTS ---------- */
+        /* ---------- RANDOM MARKET EVENTS ---------- */
 
-function randomEvent(manual) {
+function randomEvent() {
 
     if (!game) return;
 
     const events = [
 
         {
-            weight: 20,
-            run: () => {
-
-                const amount = random(50, 500);
-
-                game.cash += amount;
-
-                return `
-                    💵 You found ${money(amount)}
-                    on the street.
-                `;
-
-            }
-        },
-
-        {
             weight: 10,
+            type: "market",
             run: () => {
 
                 const item =
                     ITEMS[random(0, ITEMS.length - 1)];
 
-                const amount = random(1, 5);
-
-                const room =
-                    game.capacity - inventoryCount();
-
-                const found =
-                    Math.min(amount, room);
-
-                if (found <= 0) {
-
-                    const cash = random(50, 200);
-
-                    game.cash += cash;
-
-                    return `
-                        🎒 You found some goods,
-                        but your pockets are full.
-                        Someone paid you ${money(cash)} instead.
-                    `;
-
-                }
-
-                game.inventory[item.name] =
-                    (game.inventory[item.name] || 0) + found;
-
-                return `
-                    🎒 You found ${found}
-                    units of ${item.name}.
-                `;
-
-            }
-        },
-
-        {
-            weight: 12,
-            run: () => {
-
-                const healAmount = random(10, 30);
-
-                game.health =
-                    Math.min(
-                        100,
-                        game.health + healAmount
-                    );
-
-                return `
-                    ❤️ You found a first-aid kit.
-                    Health +${healAmount}.
-                `;
-
-            }
-        },
-
-        {
-            weight: 12,
-            run: () => {
-
-                if (game.capacity >= 500) {
-
-                    const cash = random(100, 500);
-
-                    game.cash += cash;
-
-                    return `
-                        🎁 You found ${money(cash)}.
-                        Your pockets are already maxed out.
-                    `;
-
-                }
-
-                const upgrades = [
-                    25,
-                    25,
-                    50,
-                    50,
-                    100
-                ];
-
-                const increase =
-                    upgrades[
-                        random(0, upgrades.length - 1)
-                    ];
-
-                game.capacity =
-                    Math.min(
-                        500,
-                        game.capacity + increase
-                    );
-
-                return `
-                    👖 You found an extra pocket.
-                    Capacity +${increase}.
-                `;
-
-            }
-
-        },
-
-        {
-            weight: 8,
-            run: () => {
-
-                const amount = random(500, 3000);
-
-                game.cash += amount;
-
-                return `
-                    🍀 Jackpot!
-                    You walked into ${money(amount)}.
-                `;
-
-            }
-
-        },
-
-        {
-            weight: 10,
-            run: () => {
-
-                const item =
-                    ITEMS[random(0, ITEMS.length - 1)];
-
-                const discount =
-                    Math.floor(
-                        game.prices[item.name] * 0.45
-                    );
+                const change =
+                    random(25, 80);
 
                 game.prices[item.name] =
                     Math.max(
                         10,
-                        discount
+                        Math.floor(
+                            game.prices[item.name] *
+                            (1 + change / 100)
+                        )
                     );
 
                 return `
-                    📦 A supplier is dumping
-                    ${item.name}.
-                    The price has crashed.
+                    🚨 HUGE RAID
+                    <br>
+                    Authorities raided several major
+                    ${item.name} suppliers.
+                    <br><br>
+                    <strong>
+                    ${item.name} prices are up ${change}%!
+                    </strong>
                 `;
-
             }
-
         },
 
         {
-            weight: 8,
+            weight: 10,
+            type: "market",
             run: () => {
 
                 const item =
                     ITEMS[random(0, ITEMS.length - 1)];
 
-                game.prices[item.name] *= 2;
+                const change =
+                    random(25, 70);
+
+                game.prices[item.name] =
+                    Math.max(
+                        10,
+                        Math.floor(
+                            game.prices[item.name] *
+                            (1 - change / 100)
+                        )
+                    );
 
                 return `
-                    📈 Sudden buying frenzy!
-                    ${item.name} prices have exploded.
+                    📉 MARKET FLOOD
+                    <br>
+                    A huge shipment of
+                    ${item.name} hit the streets.
+                    <br><br>
+                    <strong>
+                    ${item.name} prices dropped ${change}%!
+                    </strong>
                 `;
-
             }
+        },
 
+        {
+            weight: 8,
+            type: "market",
+            run: () => {
+
+                const item =
+                    ITEMS[random(0, ITEMS.length - 1)];
+
+                const change =
+                    random(40, 120);
+
+                game.prices[item.name] =
+                    Math.max(
+                        10,
+                        Math.floor(
+                            game.prices[item.name] *
+                            (1 + change / 100)
+                        )
+                    );
+
+                return `
+                    📈 SUDDEN DEMAND
+                    <br>
+                    Demand for ${item.name}
+                    has suddenly exploded.
+                    <br><br>
+                    <strong>
+                    Prices jumped ${change}%!
+                    </strong>
+                `;
+            }
+        },
+
+        {
+            weight: 8,
+            type: "market",
+            run: () => {
+
+                const item =
+                    ITEMS[random(0, ITEMS.length - 1)];
+
+                const change =
+                    random(20, 60);
+
+                game.prices[item.name] =
+                    Math.max(
+                        10,
+                        Math.floor(
+                            game.prices[item.name] *
+                            (1 - change / 100)
+                        )
+                    );
+
+                return `
+                    🚚 SUPPLY SURGE
+                    <br>
+                    An unexpected shipment of
+                    ${item.name} arrived.
+                    <br><br>
+                    <strong>
+                    Prices dropped ${change}%!
+                    </strong>
+                `;
+            }
         },
 
         {
             weight: 7,
+            type: "market",
             run: () => {
 
-                const amount = random(100, 700);
+                const item =
+                    ITEMS[random(0, ITEMS.length - 1)];
 
-                game.cash += amount;
+                const change =
+                    random(30, 90);
+
+                game.prices[item.name] =
+                    Math.max(
+                        10,
+                        Math.floor(
+                            game.prices[item.name] *
+                            (1 + change / 100)
+                        )
+                    );
 
                 return `
-                    🧾 Someone accidentally
-                    handed you ${money(amount)}.
+                    🔥 SHORTAGE
+                    <br>
+                    Supplies of ${item.name}
+                    are suddenly scarce.
+                    <br><br>
+                    <strong>
+                    Prices climbed ${change}%!
+                    </strong>
                 `;
-
             }
+        },
 
+        {
+            weight: 7,
+            type: "market",
+            run: () => {
+
+                const item =
+                    ITEMS[random(0, ITEMS.length - 1)];
+
+                const change =
+                    random(20, 55);
+
+                game.prices[item.name] =
+                    Math.max(
+                        10,
+                        Math.floor(
+                            game.prices[item.name] *
+                            (1 - change / 100)
+                        )
+                    );
+
+                return `
+                    📰 BAD BATCH
+                    <br>
+                    Reports of contaminated
+                    ${item.name} have hit the streets.
+                    <br><br>
+                    <strong>
+                    Prices dropped ${change}%!
+                    </strong>
+                `;
+            }
         },
 
         {
             weight: 6,
+            type: "market",
             run: () => {
 
-                const damage = random(5, 15);
+                const item =
+                    ITEMS[random(0, ITEMS.length - 1)];
 
-                game.health =
+                const change =
+                    random(50, 150);
+
+                game.prices[item.name] =
                     Math.max(
-                        1,
-                        game.health - damage
+                        10,
+                        Math.floor(
+                            game.prices[item.name] *
+                            (1 + change / 100)
+                        )
                     );
 
                 return `
-                    🥊 A street argument went badly.
-                    Health -${damage}.
+                    🌐 INTERNATIONAL CRISIS
+                    <br>
+                    International supply problems
+                    have disrupted the ${item.name} market.
+                    <br><br>
+                    <strong>
+                    Prices surged ${change}%!
+                    </strong>
                 `;
-
             }
+        },
 
+        {
+            weight: 6,
+            type: "market",
+            run: () => {
+
+                const item =
+                    ITEMS[random(0, ITEMS.length - 1)];
+
+                const change =
+                    random(30, 80);
+
+                game.prices[item.name] =
+                    Math.max(
+                        10,
+                        Math.floor(
+                            game.prices[item.name] *
+                            (1 - change / 100)
+                        )
+                    );
+
+                return `
+                    🛃 BORDER CRACKDOWN
+                    <br>
+                    Increased inspections have
+                    disrupted the ${item.name} market.
+                    <br><br>
+                    <strong>
+                    Prices fell ${change}%!
+                    </strong>
+                `;
+            }
         },
 
         {
             weight: 5,
+            type: "find",
             run: () => {
 
-                const amount = random(50, 250);
+                const item =
+                    ITEMS[random(0, ITEMS.length - 1)];
 
-                game.cash =
-                    Math.max(
-                        0,
-                        game.cash - amount
-                    );
+                const amount =
+                    random(1, 4);
+
+                const room =
+                    game.capacity -
+                    inventoryCount();
+
+                if (room <= 0) {
+
+                    const cash =
+                        random(50, 250);
+
+                    game.cash += cash;
+
+                    return `
+                        🎒 You found a package,
+                        but your pockets are full.
+                        <br><br>
+                        You sold it for ${money(cash)}.
+                    `;
+
+                }
+
+                const found =
+                    Math.min(amount, room);
+
+                game.inventory[item.name] =
+                    (game.inventory[item.name] || 0) +
+                    found;
 
                 return `
-                    👜 Someone grabbed
-                    ${money(amount)}
-                    while you weren't looking.
+                    🎒 RANDOM FIND
+                    <br>
+                    You found ${found}
+                    unit${found === 1 ? "" : "s"} of
+                    ${item.name}.
                 `;
-
             }
+        },
 
+        {
+            weight: 4,
+            type: "cash",
+            run: () => {
+
+                const amount =
+                    random(100, 600);
+
+                game.cash += amount;
+
+                return `
+                    💵 LUCKY BREAK
+                    <br>
+                    You found ${money(amount)}
+                    tucked away in an abandoned bag.
+                `;
+            }
+        },
+
+        {
+            weight: 4,
+            type: "robbery",
+            run: () => {
+
+                const amount =
+                    Math.min(
+                        game.cash,
+                        random(50, 500)
+                    );
+
+                if (amount <= 0) {
+
+                    return `
+                        🥷 ROBBERY ATTEMPT
+                        <br>
+                        Someone tried to rob you,
+                        but you had no cash worth taking.
+                    `;
+
+                }
+
+                game.cash -= amount;
+
+                return `
+                    🥷 ROBBED
+                    <br>
+                    Someone caught you off guard
+                    and took ${money(amount)}.
+                    <br><br>
+                    Your bank money is safe.
+                `;
+            }
         }
 
     ];
 
-    let total =
+
+    const total =
         events.reduce(
-            (sum, event) => sum + event.weight,
+            (sum, event) =>
+                sum + event.weight,
             0
         );
+
 
     let roll =
         Math.random() * total;
 
-    let selected = events[0];
+
+    let selected =
+        events[0];
+
 
     for (const event of events) {
 
@@ -1652,15 +1856,18 @@ function randomEvent(manual) {
 
     }
 
+
     const result =
         selected.run();
+
 
     message(result);
 
     updateGame();
 
-}
+            }
 
+    
 
 /* ---------- BANK ---------- */
 
