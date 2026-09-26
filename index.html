@@ -785,58 +785,6 @@ function tradeFromModal(action, itemName) {
   updateGame();
 }
 
-function changeQuantity(item, amount) {
-  const input = document.getElementById("qty-" + item);
-  if (!input) return;
-  input.value = Math.max(0, (Number(input.value) || 0) + amount);
-}
-
-function getQuantity(itemName) {
-  const input = document.getElementById("qty-" + itemName);
-  if (!input) return 0;
-  const quantity = Number(input.value);
-  return Number.isFinite(quantity) ? Math.max(0, Math.floor(quantity)) : 0;
-}
-
-function buy(itemName) {
-  if (!game || game.gameOver) return;
-  const quantity = getQuantity(itemName);
-  if (quantity <= 0) return message("Choose how many units you want to buy.");
-
-  const available = game.capacity - inventoryCount();
-  if (quantity > available) return message(`You only have ${available} pocket spaces left.`);
-
-  const price = game.prices[itemName];
-  if (!Number.isFinite(price)) return message("That item is not available at this market.");
-  const total = price * quantity;
-  if (total > game.cash) return message("You don't have enough cash.");
-
-  game.cash -= total;
-  game.inventory[itemName] = (game.inventory[itemName] || 0) + quantity;
-  const input = document.getElementById("qty-" + itemName);
-  if (input) input.value = 0;
-  message(`Bought ${quantity} ${escapeHtml(itemName)} for ${money(total)}.`);
-  updateGame();
-}
-
-function sell(itemName) {
-  if (!game || game.gameOver) return;
-  const quantity = getQuantity(itemName);
-  const owned = game.inventory[itemName] || 0;
-  if (quantity <= 0) return message("Choose how many units you want to sell.");
-  if (quantity > owned) return message(`You only have ${owned} ${escapeHtml(itemName)}.`);
-
-  const price = game.prices[itemName];
-  if (!Number.isFinite(price)) return message("That item is not available at this market.");
-  const total = price * quantity;
-  game.cash += total;
-  game.inventory[itemName] -= quantity;
-  const input = document.getElementById("qty-" + itemName);
-  if (input) input.value = 0;
-  message(`Sold ${quantity} ${escapeHtml(itemName)} for ${money(total)}.`);
-  updateGame();
-}
-
 function openTravel() {
   if (!game || game.gameOver) return;
   if (game.visits >= game.maxVisits) return message("You have no visits remaining today.");
