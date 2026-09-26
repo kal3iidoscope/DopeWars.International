@@ -1187,56 +1187,137 @@ function sell(itemName) {
     updateGame();
 
 }
-    
-/*---------TRAVEL-------*/
+       
+/* ---------- TRAVEL ---------- */
 
-function travelTo(destination) {
+function openTravel() {
+    if (!game || game.gameOver) {
+        return;
+    }
 
-    closeModal();
+    const buttons = [];
+
+    LOCATIONS.forEach((city, cityIndex) => {
+        city.districts.forEach((district, districtIndex) => {
+
+            const current =
+                city.city === game.location.city &&
+                city.country === game.location.country &&
+                district === game.location.district;
+
+            buttons.push(`
+                <button
+                    onclick="travelTo(${cityIndex}, ${districtIndex})"
+                    ${current ? "disabled" : ""}
+                >
+                    ${escapeHtml(city.city)}, ${escapeHtml(city.country)}
+                    <br>
+                    <small>${escapeHtml(district)}</small>
+                    ${current ? " (CURRENT)" : ""}
+                </button>
+            `);
+        });
+    });
+
+    openModal(`
+        <h2>✈ TRAVEL</h2>
+
+        <p>
+            Choose your next destination.
+            Every move uses one visit.
+        </p>
+
+        <div class="location-list">
+            ${buttons.join("")}
+        </div>
+
+        <button onclick="closeModal()">CANCEL</button>
+    `);
+}
+
+
+function travelTo(cityIndex, districtIndex) {
+
+    if (!game || game.gameOver) {
+        return;
+    }
+
+    if (game.visits >= game.maxVisits) {
+        message("You have no visits remaining today.");
+        closeModal();
+        return;
+    }
+
+    const city = LOCATIONS[cityIndex];
+
+    if (!city || !city.districts[districtIndex]) {
+        return;
+    }
+
+    const district = city.districts[districtIndex];
 
     if (
-        destination.city === game.location.city &&
-        destination.district === game.location.district
+        city.city === game.location.city &&
+        city.country === game.location.country &&
+        district === game.location.district
     ) {
-
         message("You're already here.");
-
+        closeModal();
         return;
-
     }
 
     const international =
-        destination.country !== game.location.country;
+        city.country !== game.location.country;
 
-    let travelCost =
-        international
-            ? random(250, 1800)
-            : random(10, 150);
+    const sameCity =
+        city.city === game.location.city &&
+        city.country === game.location.country;
+
+    let travelCost;
+
+    if (sameCity) {
+        travelCost = random(5, 50);
+    } else if (international) {
+        travelCost = random(250, 1800);
+    } else {
+        travelCost = random(10, 150);
+    }
 
     if (travelCost > game.cash) {
-
         message(
-            `You need ${money(travelCost)} for the trip.`
+            `You need ${money(travelCost)} for this trip.`
         );
-
         return;
-
     }
 
     game.cash -= travelCost;
 
-    game.location = destination;
+    game.location = {
+        country: city.country,
+        city: city.city,
+        district: district,
+        districts: [...city.districts]
+    };
 
     game.visits++;
 
     generateMarket();
 
-    message(
-        `Travelled to <strong>${locationName(destination)}</strong>.
-        Travel cost: ${money(travelCost)}.`
-    );
+    closeModal();
 
-    updateGame();
+    message(`
+        ✈ Travelled to
+        <strong>${escapeHtml(locationName(game.location))}</strong>.
+        <br>
+        Travel cost: ${money(travelCost)}
+    `);
+
+    renderGame();
+
+    /*
+     * Police and random events happen ONLY when
+     * travelling to another location.
+     */
 
     const policeChance =
         international ? 15 : 7;
@@ -1244,25 +1325,18 @@ function travelTo(destination) {
     if (chance(policeChance)) {
 
         setTimeout(() => {
-
             policeEncounter();
-
         }, 400);
 
     } else if (chance(20)) {
 
         setTimeout(() => {
-
-            randomEvent(false);
-
+            randomEvent();
         }, 400);
-
     }
 
-    checkDay():
+    finishVisit();
 }
-        
-
 
 /* ---------- DAY SYSTEM ---------- */
 
@@ -1833,768 +1907,7 @@ function randomEvent() {
 
     
 
-/* ---------- BANK ---------- */
-
-function openBank() {
-
-    openModal(`
-
-        <h2>🏦 BANK</h2>
-
-        <div class="bank-amount">
-            ${money(game.bank)}
-        </div>
-
-        <p>
-            Money stored in the bank is protected
-            from police confiscation and robbery.
-        </p>
-
-        <label>AMOUNT</label>
-
-        <input
-            id="bankAmount"
-            type="number"
-            min="0"
-            placeholder="Enter amount"
-        >
-
-        <button onclick="deposit()">
-            DEPOSIT
-        </button>
-
-        <button onclick="withdraw()">
-            WITHDRAW
-        </button>
-
-        <button onclick="closeModal()">
-            CLOSE
-        </button>
-
-    `);
-
-}
-
-
-function deposit() {
-
-    const amount =
-        Number(
-            document.getElementById("bankAmount").value
-        ) || 0;
-
-    if (amount <= 0 || amount > game.cash) {
-
-        message("Invalid deposit amount.");
-
-        closeModal();
-
-        return;
-
-    }
-
-    game.cash -= amount;
-
-    game.bank += amount;
-
-    closeModal();
-
-    message(
-        `Deposited ${money(amount)} safely in the bank.`
-    );
-
-    updateGame();
-
-}
-
-
-function withdraw() {
-
-    const amount =
-        Number(
-            document.getElementById("bankAmount").value
-        ) || 0;
-
-    if (amount <= 0 || amount > game.bank) {
-
-        message("Invalid withdrawal amount.");
-
-        closeModal();
-
-        return;
-
-    }
-
-    game.bank -= amount;
-
-    game.cash += amount;
-
-    closeModal();
-
-    message(
-        `Withdrew ${money(amount)} from the bank.`
-    );
-
-    updateGame();
-
-}
-
-
-/* ---------- HOSPITAL ---------- */
-
-function openHospital() {
-
-    const cost = random(50, 250);
-
-    openModal(`
-
-        <h2>🏥 HOSPITAL</h2>
-
-        <p>
-            Basic treatment will restore your health.
-        </p>
-
-        <p>
-            Cost: <strong>${money(cost)}</strong>
-        </p>
-
-        <button onclick="heal(${cost})">
-            GET TREATMENT
-        </button>
-
-        <button onclick="closeModal()">
-            CANCEL
-        </button>
-
-    `);
-
-}
-
-
-function heal(cost) {
-
-    if (game.cash < cost) {
-
-        closeModal();
-
-        message(
-            "You don't have enough cash for treatment."
-        );
-
-        return;
-
-    }
-
-    game.cash -= cost;
-
-    game.health = 100;
-
-    closeModal();
-
-    message(
-        "You received treatment. Health restored to 100."
-    );
-
-    updateGame();
-
-}
-
-/* ---------- GAME UPDATE ---------- */
-
-function updateGame() {
-
-    if (!game) return;
-
-    document.getElementById("statLocation")
-        .textContent =
-        `${game.location.city} • ${game.location.district}`;
-
-    document.getElementById("statDay")
-        .textContent =
-        `${game.day} / ${game.gameLength}`;
-
-    document.getElementById("statVisits")
-        .textContent =
-        `${game.visits} / ${game.maxVisits}`;
-
-    document.getElementById("statCash")
-        .textContent =
-        money(game.cash);
-
-    document.getElementById("statBank")
-        .textContent =
-        money(game.bank);
-
-    document.getElementById("statHealth")
-        .textContent =
-        game.health;
-
-    document.getElementById("statCapacity")
-        .textContent =
-        `${inventoryCount()} / ${game.capacity}`;
-
-    renderMarket();
-
-    saveGame();
-
-}
-
-
-/* ---------- SAVE GAME ---------- */
-
-function saveGame() {
-
-    if (!game || game.gameOver) return;
-
-    try {
-
-        localStorage.setItem(
-            "wdwSave",
-            JSON.stringify(game)
-        );
-
-    } catch (error) {
-
-        console.log("Save unavailable.");
-
-    }
-
-}
-
-
-/* ---------- LOAD SAVED GAME ---------- */
-
-function loadSavedGame() {
-
-    try {
-
-        const saved =
-            localStorage.getItem("wdwSave");
-
-        if (!saved) return false;
-
-        const parsed =
-            JSON.parse(saved);
-
-        if (!parsed || !parsed.username) {
-
-            return false;
-
-        }
-
-        game = parsed;
-
-        showScreen("gameScreen");
-
-        updateGame();
-
-        message(
-            "Your saved game has been restored."
-        );
-
-        return true;
-
-    } catch (error) {
-
-        return false;
-
-    }
-
-}
-
-
-/* ---------- END GAME ---------- */
-
-function calculateScore() {
-
-    const stashValue =
-        Object.keys(game.inventory)
-            .reduce(
-                (total, item) =>
-                    total +
-                    (
-                        (game.inventory[item] || 0) *
-                        (game.prices[item] || 0)
-                    ),
-                0
-            );
-
-    return Math.floor(
-        game.cash +
-        game.bank +
-        stashValue
-    );
-
-}
-
-
-function endGame() {
-
-    game.gameOver = true;
-
-    const score =
-        calculateScore();
-
-    saveScore(score);
-
-    try {
-
-        localStorage.removeItem("wdwSave");
-
-    } catch (error) {}
-
-    openModal(`
-
-        <h2>🏁 GAME OVER</h2>
-
-        <p>
-            Your ${game.gameLength}-day game has ended.
-        </p>
-
-        <p>
-            FINAL SCORE
-        </p>
-
-        <div class="bank-amount">
-            ${money(score)}
-        </div>
-
-        <p>
-            Cash: ${money(game.cash)}<br>
-            Bank: ${money(game.bank)}
-        </p>
-
-        <button
-            onclick="closeModal(); showScreen('menuScreen'); loadTop10();"
-        >
-            MAIN MENU
-        </button>
-
-    `);
-
-}
-
-
-/* ---------- LEADERBOARD DATA ---------- */
-
-function getScores() {
-
-    try {
-
-        return JSON.parse(
-            localStorage.getItem("wdwScores") || "[]"
-        );
-
-    } catch (error) {
-
-        return [];
-
-    }
-
-}
-
-
-function saveScore(score) {
-
-    let scores =
-        getScores();
-
-    const existing =
-        scores.find(
-            item =>
-                item.username.toLowerCase() ===
-                game.username.toLowerCase()
-        );
-
-    const entry = {
-
-        username: game.username,
-
-        score: score,
-
-        gameLength: game.gameLength,
-
-        days: game.day,
-
-        timestamp: Date.now()
-
-    };
-
-
-    if (!existing) {
-
-        scores.push(entry);
-
-    } else if (score > existing.score) {
-
-        existing.score = score;
-
-        existing.gameLength =
-            game.gameLength;
-
-        existing.days =
-            game.day;
-
-        existing.timestamp =
-            Date.now();
-
-    }
-
-
-    scores.sort(
-        (a, b) =>
-            b.score - a.score
-    );
-
-
-    scores =
-        scores.slice(0, 100);
-
-
-    localStorage.setItem(
-        "wdwScores",
-        JSON.stringify(scores)
-    );
-
-}
-
-
-/* ---------- TOP 10 ---------- */
-
-function loadTop10() {
-
-    const scores =
-        getScores()
-            .slice(0, 10);
-
-    const container =
-        document.getElementById("top10");
-
-    let html = `
-
-        <div class="score-row">
-            <b>#</b>
-            <b>PLAYER</b>
-            <b>SCORE</b>
-        </div>
-
-    `;
-
-
-    if (scores.length === 0) {
-
-        html += `
-
-            <div class="score-row">
-                <span>1</span>
-                <span>No scores yet</span>
-                <span>---</span>
-            </div>
-
-        `;
-
-    }
-
-
-    scores.forEach(
-        (score, index) => {
-
-            html += `
-
-                <div class="score-row">
-
-                    <span>
-                        ${index + 1}
-                    </span>
-
-                    <span>
-                        ${escapeHtml(score.username)}
-                    </span>
-
-                    <span>
-                        ${money(score.score)}
-                    </span>
-
-                </div>
-
-            `;
-
-        }
-    );
-
-
-    container.innerHTML = html;
-
-}
-
-/* ---------- FULL LEADERBOARD ---------- */
-
-function showLeaderboard() {
-
-    const scores =
-        getScores();
-
-    let html = `
-
-        <h2>GLOBAL LEADERBOARD</h2>
-
-        <div class="score-row">
-            <b>RANK</b>
-            <b>PLAYER</b>
-            <b>SCORE</b>
-        </div>
-
-    `;
-
-    if (scores.length === 0) {
-
-        html += `
-            <p>No completed games yet.</p>
-        `;
-
-    }
-
-    scores.forEach(
-        (score, index) => {
-
-            html += `
-
-                <div class="score-row">
-
-                    <span>
-                        ${index + 1}
-                    </span>
-
-                    <span>
-                        ${escapeHtml(score.username)}
-                    </span>
-
-                    <span>
-                        ${money(score.score)}
-                    </span>
-
-                </div>
-
-            `;
-
-        }
-    );
-
-    document.getElementById(
-        "leaderboardRows"
-    ).innerHTML = html;
-
-    showScreen("leaderboardScreen");
-
-}
-
-
-/* ---------- SETTINGS ---------- */
-
-function showSettings() {
-
-    openModal(`
-
-        <h2>⚙ SETTINGS</h2>
-
-        <p>
-            W.D.W. settings will be expanded as the
-            online version is connected.
-        </p>
-
-        <button onclick="closeModal()">
-            CLOSE
-        </button>
-
-    `);
-
-}
-
-
-/* ---------- HOW TO PLAY ---------- */
-
-function showHowToPlay() {
-
-    openModal(`
-
-        <h2>HOW TO PLAY</h2>
-
-        <p>
-            Buy low. Sell high. Travel.
-            Don't get busted.
-        </p>
-
-        <p>
-            You begin with cash and limited pocket space.
-            Each district has its own randomly generated
-            market.
-        </p>
-
-        <p>
-            Every location transition counts as one visit.
-            After five visits, a new game day begins and
-            the markets regenerate.
-        </p>
-
-        <p>
-            Banks protect deposited money from police
-            confiscation and robberies.
-        </p>
-
-        <p>
-            Police encounters can result in either
-            escaping or getting busted.
-        </p>
-
-        <p>
-            Getting busted does NOT automatically end
-            your game.
-        </p>
-
-        <button onclick="closeModal()">
-            GOT IT
-        </button>
-
-    `);
-
-}
-
-
-/* ---------- MODALS ---------- */
-
-function openModal(content) {
-
-    document.getElementById(
-        "modalContent"
-    ).innerHTML = content;
-
-    document.getElementById(
-        "modal"
-    ).classList.add("active");
-
-}
-
-
-function closeModal() {
-
-    document.getElementById(
-        "modal"
-    ).classList.remove("active");
-
-}
-
-
-/* ---------- START GAME ---------- */
-
-function showStart() {
-
-    const select =
-        document.getElementById(
-            "startingLocation"
-        );
-
-    select.innerHTML = "";
-
-    LOCATIONS.forEach(city => {
-
-        city.districts.forEach(district => {
-
-            const option =
-                document.createElement("option");
-
-            option.value =
-                JSON.stringify({
-                    country: city.country,
-                    city: city.city,
-                    district: district
-                });
-
-            option.textContent =
-                `${city.city}, ${city.country} • ${district}`;
-
-            select.appendChild(option);
-
-        });
-
-    });
-
-    showScreen("startScreen");
-
-}
-
-
-function startGame() {
-
-    const username =
-        document.getElementById(
-            "playerName"
-        ).value.trim();
-
-    if (username.length < 3) {
-
-        alert(
-            "Please enter a player name with at least 3 characters."
-        );
-
-        return;
-
-    }
-
-    const length =
-        Number(
-            document.getElementById(
-                "gameLength"
-            ).value
-        );
-
-    const location =
-        JSON.parse(
-            document.getElementById(
-                "startingLocation"
-            ).value
-        );
-
-    game =
-        newGameState(
-            username,
-            length,
-            location
-        );
-
-    generateMarket();
-
-    showScreen("gameScreen");
-
-    updateGame();
-
-    message(
-        `<strong>Welcome to W.D.W.</strong><br>
-        Your worldwide game begins now.`
-    );
-
-}
-
-
-/* ---------- SECURITY / TEXT SAFETY ---------- */
-
-function escapeHtml(text) {
-
-    const div =
-        document.createElement("div");
-
-    div.textContent =
-        text;
-
-    return div.innerHTML;
-
-}
-
-
-/* ---------- INITIALIZE GAME ---------- */
-
-loadTop10();
-        
-        {
+      {
     /* =========================================================
    MENU, MODALS, SETTINGS, LEADERBOARD AND GAME SERVICES
    Add before the closing </script> tag.
