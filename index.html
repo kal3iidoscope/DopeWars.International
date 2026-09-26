@@ -156,13 +156,37 @@ button {
 }
 
 .market-row {
-    display: grid;
-    grid-template-columns: 1fr 130px 170px;
-    gap: 10px;
-    align-items: center;
-    padding: 13px;
-    border-bottom: 1px solid #222;
-}
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+     min-height: 56px;
+     padding: 0 14px;
+     border-bottom: 1px solid #292929;
+     background: transparent;
+     cursor: pointer;
+     transition: background .12s ease;
+ }
+
+.market-row:hover { background: #171717; }
+.market-row:active { background: #202020; }
+
+.market-name {
+     font-size: 18px;
+     font-weight: 500;
+     white-space: nowrap;
+     overflow: hidden;
+     text-overflow: ellipsis;
+ }
+
+.market-price {
+     font-size: 18px;
+     font-weight: 600;
+     margin-left: 14px;
+     white-space: nowrap;
+ }
+
+.market-price.hot { color: #ff4b3e; }
+.market-price.cheap { color: #7bdc3f; }
 
 .market-row:last-child {
     border-bottom: 0;
@@ -317,10 +341,15 @@ label {
     .header {
         grid-template-columns: repeat(3, 1fr);
     }
+     .market-row {
+         min-height: 52px;
+         padding: 0 10px;
+     }
 
-    .market-row {
-        grid-template-columns: 1fr;
-    }
+     .market-name,
+     .market-price {
+         font-size: 17px;
+     }
 
     .action-bar {
         grid-template-columns: repeat(2, 1fr);
@@ -680,22 +709,80 @@ function renderMarket() {
   container.innerHTML = "";
 
   ITEMS.forEach(item => {
-    const owned = game.inventory[item.name] || 0;
     const price = game.prices[item.name] || 0;
+    const midpoint = (item.min + item.max) / 2;
+    const ratio = midpoint > 0 ? price / midpoint : 1;
+    const priceClass = ratio >= 1.45 ? "hot" : (ratio <= 0.55 ? "cheap" : "");
     const row = document.createElement("div");
     row.className = "market-row";
+    row.setAttribute("role", "button");
+    row.setAttribute("tabindex", "0");
+    row.setAttribute("aria-label", `${item.name}, ${money(price)}. Tap to buy or sell.`);
     row.innerHTML = `
-      <div><strong>${escapeHtml(item.name)}</strong><br><small>Carrying: ${owned}</small></div>
-      <div class="price">${money(price)}</div>
-      <div class="controls">
-        <button type="button" onclick="changeQuantity(${JSON.stringify(item.name)}, -1)">−</button>
-        <input id="qty-${item.name}" type="number" min="0" step="1" value="0" aria-label="Quantity of ${escapeHtml(item.name)}">
-        <button type="button" onclick="changeQuantity(${JSON.stringify(item.name)}, 1)">+</button>
-        <button type="button" onclick="buy(${JSON.stringify(item.name)})">BUY</button>
-        <button type="button" onclick="sell(${JSON.stringify(item.name)})">SELL</button>
-      </div>`;
+      <span class="market-name">${escapeHtml(item.name)}</span>
+      <span class="market-price ${priceClass}">${money(price)}</span>`;
+    row.addEventListener("click", () => openTrade(item.name));
+    row.addEventListener("keydown", event => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openTrade(item.name);
+      }
+    });
     container.appendChild(row);
   });
+}
+
+function openTrade(itemName) {
+  if (!game || game.gameOver) return;
+  const item = ITEMS.find(entry => entry.name === itemName);
+  if (!item) return;
+
+  const price = game.prices[itemName] || 0;
+  const owned = game.inventory[itemName] || 0;
+  const freeSpace = Math.max(0, game.capacity - inventoryCount());
+
+  openModal(`
+    <h2>${escapeHtml(itemName)}</h2>
+    <p>Market price: <strong>${money(price)}</strong></p>
+    <p>Carrying: <strong>${owned}</strong> &nbsp; Pocket space: <strong>${freeSpace}</strong></p>
+    <label for="tradeQty">Quantity</label>
+    <input id="tradeQty" type="number" min="1" step="1" value="1" inputmode="numeric" style="width:100%;padding:11px;margin-top:6px;background:#080808;border:1px solid #444;color:white;border-radius:6px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;">
+      <button type="button" onclick="tradeFromModal('buy', ${JSON.stringify(itemName)})">BUY</button>
+      <button type="button" onclick="tradeFromModal('sell', ${JSON.stringify(itemName)})">SELL</button>
+    </div>
+    <button type="button" onclick="closeModal()">CLOSE</button>
+  `);
+}
+
+function tradeFromModal(action, itemName) {
+  const input = document.getElementById("tradeQty");
+  const quantity = input ? Math.max(0, Math.floor(Number(input.value) || 0)) : 0;
+  if (quantity <= 0) return message("Choose a quantity greater than zero.");
+
+  const price = game.prices[itemName];
+  if (!Number.isFinite(price)) return message("That item is not available at this market.");
+
+  if (action === "buy") {
+    const available = game.capacity - inventoryCount();
+    if (quantity > available) return message(`You only have ${available} pocket spaces left.`);
+    const total = price * quantity;
+    if (total > game.cash) return message("You don't have enough cash.");
+    game.cash -= total;
+    game.inventory[itemName] = (game.inventory[itemName] || 0) + quantity;
+    closeModal();
+    message(`Bought ${quantity} ${escapeHtml(itemName)} for ${money(total)}.`);
+  } else {
+    const owned = game.inventory[itemName] || 0;
+    if (quantity > owned) return message(`You only have ${owned} units to sell.`);
+    const total = price * quantity;
+    game.inventory[itemName] = owned - quantity;
+    game.cash += total;
+    closeModal();
+    message(`Sold ${quantity} ${escapeHtml(itemName)} for ${money(total)}.`);
+  }
+
+  updateGame();
 }
 
 function changeQuantity(item, amount) {
