@@ -518,1400 +518,57 @@ label {
 </div>
 
 <script>
-
 /* =========================================================
    W.D.W. WORLDWIDE DRUG WARS
-   Core single-player game engine
+   Cleaned single-player game engine
    ========================================================= */
-
-/* ---------- LOCATIONS ---------- */
 
 const LOCATIONS = [
-
-    {
-        country: "Canada",
-        city: "Toronto",
-        districts: [
-            "Downtown",
-            "Kensington",
-            "Yorkville",
-            "The Junction",
-            "Harbourfront"
-        ]
-    },
-
-    {
-        country: "Canada",
-        city: "Windsor",
-        districts: [
-            "Downtown",
-            "Walkerville",
-            "Ford City",
-            "Riverside",
-            "West End",
-            "East End"
-        ]
-    },
-
-    {
-        country: "Canada",
-        city: "Montreal",
-        districts: [
-            "Old Montreal",
-            "Downtown",
-            "Plateau",
-            "Mile End",
-            "Griffintown"
-        ]
-    },
-
-    
-    {
-        country: "Canada",
-        city: "Vancouver",
-        districts: [
-            "Downtown",
-            "Gastown",
-            "Kitsilano",
-            "Commercial Drive",
-            "Waterfront"
-        
-        ]
-    },
-    {
-        country: "Canada",
-        city: "Vancouver Island",
-        districts: [
-            "Downtown",
-            "Sooke",
-            "Langford",
-            "Jordan River",
-            "Campbell River"
-        
-        ]
-    },
-
-    {
-        country: "USA",
-        city: "New York",
-        districts: [
-            "Manhattan",
-            "Brooklyn",
-            "Queens",
-            "Bronx",
-            "Harlem"
-        ]
-    },
-
-    {
-        country: "USA",
-        city: "Chicago",
-        districts: [
-            "The Loop",
-            "Wicker Park",
-            "Hyde Park",
-            "Pilsen",
-            "River North"
-        ]
-    },
-
-    {
-        country: "USA",
-        city: "Los Angeles",
-        districts: [
-            "Downtown",
-            "Hollywood",
-            "Venice",
-            "Koreatown",
-            "Echo Park"
-        ]
-    },
-
-    {
-        country: "USA",
-        city: "Las Vegas",
-        districts: [
-            "The Strip",
-            "Downtown",
-            "Fremont",
-            "Arts District",
-            "Paradise"
-        ]
-    },
-
-    {
-        country: "UK",
-        city: "London",
-        districts: [
-            "Soho",
-            "Camden",
-            "Shoreditch",
-            "Westminster",
-            "Brixton"
-        ]
-    },
-
-    {
-        country: "France",
-        city: "Paris",
-        districts: [
-            "Montmartre",
-            "Le Marais",
-            "Latin Quarter",
-            "Bastille",
-            "Belleville"
-        ]
-    },
-
-    {
-        country: "Germany",
-        city: "Berlin",
-        districts: [
-            "Mitte",
-            "Kreuzberg",
-            "Neukolln",
-            "Prenzlauer Berg",
-            "Friedrichshain"
-        ]
-    },
-
-    {
-        country: "Netherlands",
-        city: "Amsterdam",
-        districts: [
-            "Centrum",
-            "Jordaan",
-            "De Pijp",
-            "Oost",
-            "Noord"
-        ]
-    },
-
-    {
-        country: "Japan",
-        city: "Tokyo",
-        districts: [
-            "Shibuya",
-            "Shinjuku",
-            "Akihabara",
-            "Ginza",
-            "Harajuku"
-        ]
-    },
-
-    {
-        country: "Australia",
-        city: "Sydney",
-        districts: [
-            "CBD",
-            "Surry Hills",
-            "Newtown",
-            "The Rocks",
-            "Darling Harbour"
-        ]
-    },
-
-    {
-        country: "Brazil",
-        city: "Rio de Janeiro",
-        districts: [
-            "Centro",
-            "Copacabana",
-            "Ipanema",
-            "Lapa",
-            "Botafogo"
-        ]
-    },
-
-    {
-        country: "Mexico",
-        city: "Mexico City",
-        districts: [
-            "Centro",
-            "Roma",
-            "Condesa",
-            "Polanco",
-            "Coyoacan"
-        ]
-    },
-
-    {
-        country: "South Africa",
-        city: "Cape Town",
-        districts: [
-            "City Bowl",
-            "Woodstock",
-            "Camps Bay",
-            "Observatory",
-            "Waterfront"
-        ]
-    },
-
-    {
-        country: "UAE",
-        city: "Dubai",
-        districts: [
-            "Downtown",
-            "Deira",
-            "Marina",
-            "Jumeirah",
-            "Bur Dubai"
-        ]
-    }
-
+  { country: "Canada", city: "Toronto", districts: ["Downtown","Kensington","Yorkville","The Junction","Harbourfront"] },
+  { country: "Canada", city: "Windsor", districts: ["Downtown","Walkerville","Ford City","Riverside","West End","East End"] },
+  { country: "Canada", city: "Montreal", districts: ["Old Montreal","Downtown","Plateau","Mile End","Griffintown"] },
+  { country: "Canada", city: "Vancouver", districts: ["Downtown","Gastown","Kitsilano","Commercial Drive","Waterfront"] },
+  { country: "Canada", city: "Vancouver Island", districts: ["Downtown","Sooke","Langford","Jordan River","Campbell River"] },
+  { country: "USA", city: "New York", districts: ["Manhattan","Brooklyn","Queens","Bronx","Harlem"] },
+  { country: "USA", city: "Chicago", districts: ["The Loop","Wicker Park","Hyde Park","Pilsen","River North"] },
+  { country: "USA", city: "Los Angeles", districts: ["Downtown","Hollywood","Venice","Koreatown","Echo Park"] },
+  { country: "USA", city: "Las Vegas", districts: ["The Strip","Downtown","Fremont","Arts District","Paradise"] },
+  { country: "UK", city: "London", districts: ["Soho","Camden","Shoreditch","Westminster","Brixton"] },
+  { country: "France", city: "Paris", districts: ["Montmartre","Le Marais","Latin Quarter","Bastille","Belleville"] },
+  { country: "Germany", city: "Berlin", districts: ["Mitte","Kreuzberg","Neukolln","Prenzlauer Berg","Friedrichshain"] },
+  { country: "Netherlands", city: "Amsterdam", districts: ["Centrum","Jordaan","De Pijp","Oost","Noord"] },
+  { country: "Japan", city: "Tokyo", districts: ["Shibuya","Shinjuku","Akihabara","Ginza","Harajuku"] },
+  { country: "Australia", city: "Sydney", districts: ["CBD","Surry Hills","Newtown","The Rocks","Darling Harbour"] },
+  { country: "Brazil", city: "Rio de Janeiro", districts: ["Centro","Copacabana","Ipanema","Lapa","Botafogo"] },
+  { country: "Mexico", city: "Mexico City", districts: ["Centro","Roma","Condesa","Polanco","Coyoacan"] },
+  { country: "South Africa", city: "Cape Town", districts: ["City Bowl","Woodstock","Camps Bay","Observatory","Waterfront"] },
+  { country: "UAE", city: "Dubai", districts: ["Downtown","Deira","Marina","Jumeirah","Bur Dubai"] }
 ];
 
-/* ---------- ITEMS ---------- */
-
 const ITEMS = [
-    {
-        name: "Weed",
-        min: 80,
-        max: 850
-    },
-    {
-        name: "Hash",
-        min: 150,
-        max: 6000
-    },
-{
-    name: "Acid",
-    min: 113,
-    max: 8000
-},
-{
-    name: "Cocaine",
-    min: 1216,
-    max: 90000
-},
-{
-    name: "Hashish",
-    min: 23,
-    max: 1203
-},
-{
-    name: "Heroin",
-    min: 1279,
-    max: 100000
-},
-{
-    name: "Ludes",
-    min: 10,
-    max: 100
-},
-{
-    name: "MDA",
-    min: 96,
-    max: 6896
-},
-{
-    name: "Opium",
-    min: 692,
-    max: 100000
-},
-{
-    name: "PCP",
-    min: 407,
-    max: 10000
-},
-{
-    name: "Peyote",
-    min: 224,
-    max: 2240
-},
-{
-    name: "Fentanyl",
-    min: 4500,
-    max: 18000
-},
-{
-    name: "GHB",
-    min: 150,
-    max: 7500
-},
-{
-    name: "Viagra",
-    min: 40,
-    max: 250
-},
-{
-    name: "Meth",
-    min: 800,
-    max: 4500
-},
-{
-    name: "Ketamine",
-    min: 300,
-    max: 18000
-},
-{
-    name: "Xanax",
-    min: 50,
-    max: 400
-},
-{
-    name: "Ecstasy",
-    min: 400,
-    max: 5000
-},
-{
-    name: "Crack",
-    min: 1200,
-    max: 65000
-},
-{
-    name: "DMT",
-    min: 900,
-    max: 7000
-},
-
-
-        ];
-        
-
-/* ---------- GAME STATE ---------- */
+  { name: "Weed", min: 80, max: 850 },
+  { name: "Hash", min: 150, max: 6000 },
+  { name: "Acid", min: 113, max: 8000 },
+  { name: "Cocaine", min: 1216, max: 90000 },
+  { name: "Hashish", min: 23, max: 1203 },
+  { name: "Heroin", min: 1279, max: 100000 },
+  { name: "Ludes", min: 10, max: 100 },
+  { name: "MDA", min: 96, max: 6896 },
+  { name: "Opium", min: 692, max: 100000 },
+  { name: "PCP", min: 407, max: 10000 },
+  { name: "Peyote", min: 224, max: 2240 },
+  { name: "Fentanyl", min: 4500, max: 18000 },
+  { name: "GHB", min: 150, max: 7500 },
+  { name: "Viagra", min: 40, max: 250 },
+  { name: "Meth", min: 800, max: 4500 },
+  { name: "Ketamine", min: 300, max: 18000 },
+  { name: "Xanax", min: 50, max: 400 },
+  { name: "Ecstasy", min: 400, max: 5000 },
+  { name: "Crack", min: 1200, max: 65000 },
+  { name: "DMT", min: 900, max: 7000 }
+];
 
 let game = null;
-
-        
-function newGameState(name, length, location) {
-
-    return {
-
-        username: name,
-
-        gameLength: length,
-
-        day: 1,
-
-        visits: 0,
-
-        maxVisits: 5,
-
-        cash: 2000,
-
-        bank: 0,
-
-        health: 100,
-
-        capacity: 100,
-
-        inventory: {},
-
-        location: location,
-
-        prices: {},
-
-        gameOver: false
-
-    };
-
-}
-
-/* ---------- HELPERS ---------- */
-
-function money(value) {
-
-    return "$" + Math.max(0, Math.floor(value)).toLocaleString();
-
-}
-
-function random(min, max) {
-
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-
-}
-
-function chance(percent) {
-
-    return Math.random() * 100 < percent;
-
-}
-
-function showScreen(id) {
-
-    document.querySelectorAll(".screen")
-        .forEach(screen => screen.classList.remove("active"));
-
-    document.getElementById(id)
-        .classList.add("active");
-
-}
-
-function message(text) {
-
-    document.getElementById("message").innerHTML = text;
-
-}
-
-/* ---------- LOCATION DISPLAY ---------- */
-
-function locationName(location) {
-
-    return `${location.city}, ${location.country} • ${location.district}`;
-
-}
-
-/* ---------- MARKET ---------- */
-
-function generateMarket() {
-
-    game.prices = {};
-
-    ITEMS.forEach(item => {
-
-        let price = random(item.min, item.max);
-
-        /*
-         * Larger daily swings are intentional.
-         * Every item rolls independently.
-         */
-
-        if (chance(12)) {
-
-            price *= random(150, 250) / 100;
-
-        }
-
-        if (chance(12)) {
-
-            price *= random(35, 70) / 100;
-
-        }
-
-        game.prices[item.name] =
-            Math.max(10, Math.floor(price));
-
-    });
-
-}
-
-function renderMarket() {
-
-    const container =
-        document.getElementById("marketRows");
-
-    container.innerHTML = "";
-
-    ITEMS.forEach(item => {
-
-        const owned =
-            game.inventory[item.name] || 0;
-
-        const price =
-            game.prices[item.name];
-
-        const row =
-            document.createElement("div");
-
-        row.className = "market-row";
-
-        row.innerHTML = `
-
-            <div>
-                <strong>${item.name}</strong>
-                <br>
-                <small>
-                    Carrying: ${owned}
-                </small>
-            </div>
-
-            <div class="price">
-                ${money(price)}
-            </div>
-
-            <div class="controls">
-
-                <button onclick="changeQuantity('${item.name}', -1)">
-                    −
-                </button>
-
-                <input
-                    id="qty-${item.name}"
-                    type="number"
-                    min="0"
-                    value="0"
-                >
-
-                <button onclick="changeQuantity('${item.name}', 1)">
-                    +
-                </button>
-
-                <button onclick="buy('${item.name}')">
-                    BUY
-                </button>
-
-                <button onclick="sell('${item.name}')">
-                    SELL
-                </button>
-
-            </div>
-
-        `;
-
-        container.appendChild(row);
-
-    });
-
-}
-
-function changeQuantity(item, amount) {
-
-    const input =
-        document.getElementById("qty-" + item);
-
-    let value =
-        Number(input.value) || 0;
-
-    value += amount;
-
-    if (value < 0) value = 0;
-
-    input.value = value;
-
-}
-
-
- /* ---------- INVENTORY ---------- */
-
-function inventoryCount() {
-
-    return Object.values(game.inventory)
-        .reduce((a, b) => a + b, 0);
-
-}
-
-function buy(itemName) {
-
-    const input =
-        document.getElementById("qty-" + itemName);
-
-    let quantity =
-        Number(input.value) || 0;
-
-    if (quantity <= 0) {
-
-        message("Choose how many units you want to buy.");
-
-        return;
-
-    }
-
-    const available =
-        game.capacity - inventoryCount();
-
-    if (quantity > available) {
-
-        message(
-            `You only have ${available} pocket spaces left.`
-        );
-
-        return;
-
-    }
-
-    const price =
-        game.prices[itemName];
-
-    const total =
-        price * quantity;
-
-    if (total > game.cash) {
-
-        message("You don't have enough cash.");
-
-        return;
-
-    }
-
-    game.cash -= total;
-
-    game.inventory[itemName] =
-        (game.inventory[itemName] || 0) + quantity;
-
-    input.value = 0;
-
-    message(
-        `Bought ${quantity} ${itemName} for ${money(total)}.`
-    );
-
-    updateGame();
-
-}
-
-function sell(itemName) {
-
-    const input =
-        document.getElementById("qty-" + itemName);
-
-    let quantity =
-        Number(input.value) || 0;
-
-    const owned =
-        game.inventory[itemName] || 0;
-
-    if (quantity <= 0) {
-
-        message("Choose how many units you want to sell.");
-
-        return;
-
-    }
-
-    if (quantity > owned) {
-
-        message(
-            `You only have ${owned} ${itemName}.`
-        );
-
-        return;
-
-    }
-
-    const price =
-        game.prices[itemName];
-
-    const total =
-        price * quantity;
-
-    game.cash += total;
-
-    game.inventory[itemName] -= quantity;
-
-    input.value = 0;
-
-    message(
-        `Sold ${quantity} ${itemName} for ${money(total)}.`
-    );
-
-    updateGame();
-
-}
-       
-/* ---------- TRAVEL ---------- */
-
-function openTravel() {
-    if (!game || game.gameOver) {
-        return;
-    }
-
-    const buttons = [];
-
-    LOCATIONS.forEach((city, cityIndex) => {
-        city.districts.forEach((district, districtIndex) => {
-
-            const current =
-                city.city === game.location.city &&
-                city.country === game.location.country &&
-                district === game.location.district;
-
-            buttons.push(`
-                <button
-                    onclick="travelTo(${cityIndex}, ${districtIndex})"
-                    ${current ? "disabled" : ""}
-                >
-                    ${escapeHtml(city.city)}, ${escapeHtml(city.country)}
-                    <br>
-                    <small>${escapeHtml(district)}</small>
-                    ${current ? " (CURRENT)" : ""}
-                </button>
-            `);
-        });
-    });
-
-    openModal(`
-        <h2>✈ TRAVEL</h2>
-
-        <p>
-            Choose your next destination.
-            Every move uses one visit.
-        </p>
-
-        <div class="location-list">
-            ${buttons.join("")}
-        </div>
-
-        <button onclick="closeModal()">CANCEL</button>
-    `);
-}
-
-
-function travelTo(cityIndex, districtIndex) {
-
-    if (!game || game.gameOver) {
-        return;
-    }
-
-    if (game.visits >= game.maxVisits) {
-        message("You have no visits remaining today.");
-        closeModal();
-        return;
-    }
-
-    const city = LOCATIONS[cityIndex];
-
-    if (!city || !city.districts[districtIndex]) {
-        return;
-    }
-
-    const district = city.districts[districtIndex];
-
-    if (
-        city.city === game.location.city &&
-        city.country === game.location.country &&
-        district === game.location.district
-    ) {
-        message("You're already here.");
-        closeModal();
-        return;
-    }
-
-    const international =
-        city.country !== game.location.country;
-
-    const sameCity =
-        city.city === game.location.city &&
-        city.country === game.location.country;
-
-    let travelCost;
-
-    if (sameCity) {
-        travelCost = random(5, 50);
-    } else if (international) {
-        travelCost = random(250, 1800);
-    } else {
-        travelCost = random(10, 150);
-    }
-
-    if (travelCost > game.cash) {
-        message(
-            `You need ${money(travelCost)} for this trip.`
-        );
-        return;
-    }
-
-    game.cash -= travelCost;
-
-    game.location = {
-        country: city.country,
-        city: city.city,
-        district: district,
-        districts: [...city.districts]
-    };
-
-    game.visits++;
-
-    generateMarket();
-
-    closeModal();
-
-    message(`
-        ✈ Travelled to
-        <strong>${escapeHtml(locationName(game.location))}</strong>.
-        <br>
-        Travel cost: ${money(travelCost)}
-    `);
-
-    renderGame();
-
-    /*
-     * Police and random events happen ONLY when
-     * travelling to another location.
-     */
-
-    const policeChance =
-        international ? 15 : 7;
-
-    if (chance(policeChance)) {
-
-        setTimeout(() => {
-            policeEncounter();
-        }, 400);
-
-    } else if (chance(20)) {
-
-        setTimeout(() => {
-            randomEvent();
-        }, 400);
-    }
-
-    finishVisit();
-}
-
-/* ---------- DAY SYSTEM ---------- */
-
-function checkDay() {
-
-    if (game.visits >= game.maxVisits) {
-
-        game.day++;
-
-        game.visits = 0;
-
-        generateMarket();
-
-        message(
-            `<strong>DAY ${game.day}</strong><br>
-             The markets have regenerated.`
-        );
-
-        if (game.day > game.gameLength) {
-
-            endGame();
-
-        }
-
-    }
-
-}
-
-/* ---------- POLICE ---------- */
-
-function policeEncounter() {
-
-    openModal(`
-
-        <h2 class="danger">
-            🚨 POLICE ENCOUNTER
-        </h2>
-
-        <p>
-            An officer has spotted you.
-        </p>
-
-        <p>
-            What do you do?
-        </p>
-
-        <button onclick="runFromPolice()">
-            🏃 RUN
-        </button>
-
-        <button onclick="fightPolice()">
-            👊 FIGHT
-        </button>
-
-    `);
-
-}
-
-function runFromPolice() {
-
-    closeModal();
-
-    if (chance(62)) {
-
-        message(
-            "You managed to get away before they could stop you."
-        );
-
-    } else {
-
-        busted();
-
-    }
-
-}
-
-function fightPolice() {
-
-    closeModal();
-
-    if (chance(48)) {
-
-        const damage =
-            random(8, 25);
-
-        game.health =
-            Math.max(1, game.health - damage);
-
-        message(
-            `You fought your way out.
-            You lost ${damage} health.`
-        );
-
-    } else {
-
-        busted();
-
-    }
-
-    updateGame();
-
-}
-
-function busted() {
-
-    const cashLoss =
-        Math.min(
-            game.cash,
-            Math.floor(game.cash * random(20, 70) / 100)
-        );
-
-    game.cash -= cashLoss;
-
-    let stashLoss = 0;
-
-    Object.keys(game.inventory)
-        .forEach(item => {
-
-            if (game.inventory[item] > 0 && chance(65)) {
-
-                const loss =
-                    Math.max(
-                        1,
-                        Math.floor(
-                            game.inventory[item] *
-                            random(20, 70) /
-                            100
-                        )
-                    );
-
-                game.inventory[item] -= loss;
-
-                stashLoss += loss;
-
-            }
-
-        });
-
-    message(`
-        <strong class="danger">BUSTED!</strong><br>
-        Police confiscated ${money(cashLoss)}
-        and ${stashLoss} units of your stash.
-        <br><br>
-        Your bank account was untouched.
-    `);
-
-    updateGame();
-
-    {
-
-        /* ---------- RANDOM MARKET EVENTS ---------- */
-
-function randomEvent() {
-
-    if (!game) return;
-
-    const events = [
-
-        {
-            weight: 10,
-            type: "market",
-            run: () => {
-
-                const item =
-                    ITEMS[random(0, ITEMS.length - 1)];
-
-                const change =
-                    random(25, 80);
-
-                game.prices[item.name] =
-                    Math.max(
-                        10,
-                        Math.floor(
-                            game.prices[item.name] *
-                            (1 + change / 100)
-                        )
-                    );
-
-                return `
-                    🚨 HUGE RAID
-                    <br>
-                    Authorities raided several major
-                    ${item.name} suppliers.
-                    <br><br>
-                    <strong>
-                    ${item.name} prices are up ${change}%!
-                    </strong>
-                `;
-            }
-        },
-
-        {
-            weight: 10,
-            type: "market",
-            run: () => {
-
-                const item =
-                    ITEMS[random(0, ITEMS.length - 1)];
-
-                const change =
-                    random(25, 70);
-
-                game.prices[item.name] =
-                    Math.max(
-                        10,
-                        Math.floor(
-                            game.prices[item.name] *
-                            (1 - change / 100)
-                        )
-                    );
-
-                return `
-                    📉 MARKET FLOOD
-                    <br>
-                    A huge shipment of
-                    ${item.name} hit the streets.
-                    <br><br>
-                    <strong>
-                    ${item.name} prices dropped ${change}%!
-                    </strong>
-                `;
-            }
-        },
-
-        {
-            weight: 8,
-            type: "market",
-            run: () => {
-
-                const item =
-                    ITEMS[random(0, ITEMS.length - 1)];
-
-                const change =
-                    random(40, 120);
-
-                game.prices[item.name] =
-                    Math.max(
-                        10,
-                        Math.floor(
-                            game.prices[item.name] *
-                            (1 + change / 100)
-                        )
-                    );
-
-                return `
-                    📈 SUDDEN DEMAND
-                    <br>
-                    Demand for ${item.name}
-                    has suddenly exploded.
-                    <br><br>
-                    <strong>
-                    Prices jumped ${change}%!
-                    </strong>
-                `;
-            }
-        },
-
-        {
-            weight: 8,
-            type: "market",
-            run: () => {
-
-                const item =
-                    ITEMS[random(0, ITEMS.length - 1)];
-
-                const change =
-                    random(20, 60);
-
-                game.prices[item.name] =
-                    Math.max(
-                        10,
-                        Math.floor(
-                            game.prices[item.name] *
-                            (1 - change / 100)
-                        )
-                    );
-
-                return `
-                    🚚 SUPPLY SURGE
-                    <br>
-                    An unexpected shipment of
-                    ${item.name} arrived.
-                    <br><br>
-                    <strong>
-                    Prices dropped ${change}%!
-                    </strong>
-                `;
-            }
-        },
-
-        {
-            weight: 7,
-            type: "market",
-            run: () => {
-
-                const item =
-                    ITEMS[random(0, ITEMS.length - 1)];
-
-                const change =
-                    random(30, 90);
-
-                game.prices[item.name] =
-                    Math.max(
-                        10,
-                        Math.floor(
-                            game.prices[item.name] *
-                            (1 + change / 100)
-                        )
-                    );
-
-                return `
-                    🔥 SHORTAGE
-                    <br>
-                    Supplies of ${item.name}
-                    are suddenly scarce.
-                    <br><br>
-                    <strong>
-                    Prices climbed ${change}%!
-                    </strong>
-                `;
-            }
-        },
-
-        {
-            weight: 7,
-            type: "market",
-            run: () => {
-
-                const item =
-                    ITEMS[random(0, ITEMS.length - 1)];
-
-                const change =
-                    random(20, 55);
-
-                game.prices[item.name] =
-                    Math.max(
-                        10,
-                        Math.floor(
-                            game.prices[item.name] *
-                            (1 - change / 100)
-                        )
-                    );
-
-                return `
-                    📰 BAD BATCH
-                    <br>
-                    Reports of contaminated
-                    ${item.name} have hit the streets.
-                    <br><br>
-                    <strong>
-                    Prices dropped ${change}%!
-                    </strong>
-                `;
-            }
-        },
-
-        {
-            weight: 6,
-            type: "market",
-            run: () => {
-
-                const item =
-                    ITEMS[random(0, ITEMS.length - 1)];
-
-                const change =
-                    random(50, 150);
-
-                game.prices[item.name] =
-                    Math.max(
-                        10,
-                        Math.floor(
-                            game.prices[item.name] *
-                            (1 + change / 100)
-                        )
-                    );
-
-                return `
-                    🌐 INTERNATIONAL CRISIS
-                    <br>
-                    International supply problems
-                    have disrupted the ${item.name} market.
-                    <br><br>
-                    <strong>
-                    Prices surged ${change}%!
-                    </strong>
-                `;
-            }
-        },
-
-        {
-            weight: 6,
-            type: "market",
-            run: () => {
-
-                const item =
-                    ITEMS[random(0, ITEMS.length - 1)];
-
-                const change =
-                    random(30, 80);
-
-                game.prices[item.name] =
-                    Math.max(
-                        10,
-                        Math.floor(
-                            game.prices[item.name] *
-                            (1 - change / 100)
-                        )
-                    );
-
-                return `
-                    🛃 BORDER CRACKDOWN
-                    <br>
-                    Increased inspections have
-                    disrupted the ${item.name} market.
-                    <br><br>
-                    <strong>
-                    Prices fell ${change}%!
-                    </strong>
-                `;
-            }
-        },
-
-        {
-            weight: 5,
-            type: "find",
-            run: () => {
-
-                const item =
-                    ITEMS[random(0, ITEMS.length - 1)];
-
-                const amount =
-                    random(1, 4);
-
-                const room =
-                    game.capacity -
-                    inventoryCount();
-
-                if (room <= 0) {
-
-                    const cash =
-                        random(50, 250);
-
-                    game.cash += cash;
-
-                    return `
-                        🎒 You found a package,
-                        but your pockets are full.
-                        <br><br>
-                        You sold it for ${money(cash)}.
-                    `;
-
-                }
-
-                const found =
-                    Math.min(amount, room);
-
-                game.inventory[item.name] =
-                    (game.inventory[item.name] || 0) +
-                    found;
-
-                return `
-                    🎒 RANDOM FIND
-                    <br>
-                    You found ${found}
-                    unit${found === 1 ? "" : "s"} of
-                    ${item.name}.
-                `;
-            }
-        },
-
-        {
-            weight: 4,
-            type: "cash",
-            run: () => {
-
-                const amount =
-                    random(100, 600);
-
-                game.cash += amount;
-
-                return `
-                    💵 LUCKY BREAK
-                    <br>
-                    You found ${money(amount)}
-                    tucked away in an abandoned bag.
-                `;
-            }
-        },
-
-        {
-            weight: 4,
-            type: "robbery",
-            run: () => {
-
-                const amount =
-                    Math.min(
-                        game.cash,
-                        random(50, 500)
-                    );
-
-                if (amount <= 0) {
-
-                    return `
-                        🥷 ROBBERY ATTEMPT
-                        <br>
-                        Someone tried to rob you,
-                        but you had no cash worth taking.
-                    `;
-
-                }
-
-                game.cash -= amount;
-
-                return `
-                    🥷 ROBBED
-                    <br>
-                    Someone caught you off guard
-                    and took ${money(amount)}.
-                    <br><br>
-                    Your bank money is safe.
-                `;
-            }
-        }
-
-    ];
-
-
-    const total =
-        events.reduce(
-            (sum, event) =>
-                sum + event.weight,
-            0
-        );
-
-
-    let roll =
-        Math.random() * total;
-
-
-    let selected =
-        events[0];
-
-
-    for (const event of events) {
-
-        roll -= event.weight;
-
-        if (roll <= 0) {
-
-            selected = event;
-
-            break;
-
-        }
-
-    }
-
-
-    const result =
-        selected.run();
-
-
-    message(result);
-
-    updateGame();
-
-            }
-
-    
-
-      {
-    /* =========================================================
-   MENU, MODALS, SETTINGS, LEADERBOARD AND GAME SERVICES
-   Add before the closing </script> tag.
-   ========================================================= */
 
 const LEADERBOARD_KEY = "wdwLeaderboard";
 const SETTINGS_KEY = "wdwSettings";
@@ -1919,706 +576,638 @@ const SAVED_GAME_KEY = "wdwSavedGame";
 
 let settings = loadSettings();
 
-/* ---------- SAFE HTML ---------- */
+function storageGet(key, fallback = null) {
+  try { return localStorage.getItem(key) ?? fallback; }
+  catch { return fallback; }
+}
+
+function storageSet(key, value) {
+  try { localStorage.setItem(key, value); return true; }
+  catch { return false; }
+}
+
+function storageRemove(key) {
+  try { localStorage.removeItem(key); } catch { /* storage unavailable */ }
+}
+
+function newGameState(name, length, location) {
+  return {
+    username: name,
+    gameLength: length,
+    day: 1,
+    visits: 0,
+    maxVisits: 5,
+    cash: 2000,
+    bank: 0,
+    health: 100,
+    capacity: 100,
+    inventory: {},
+    location,
+    prices: {},
+    gameOver: false
+  };
+}
+
+function money(value) {
+  return "$" + Math.max(0, Math.floor(Number(value) || 0)).toLocaleString();
+}
+
+function random(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function chance(percent) {
+  return Math.random() * 100 < percent;
+}
 
 function escapeHtml(value) {
-    return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
-/* ---------- MODALS ---------- */
-
-function openModal(html) {
-    const modal = document.getElementById("modal");
-    const content = document.getElementById("modalContent");
-
-    content.innerHTML = html;
-    modal.classList.add("active");
-
-    const firstControl = content.querySelector("button, input, select");
-    if (firstControl) {
-        firstControl.focus();
-    }
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(screen => screen.classList.remove("active"));
+  const screen = document.getElementById(id);
+  if (screen) screen.classList.add("active");
 }
 
-function closeModal() {
-    document.getElementById("modal").classList.remove("active");
-    document.getElementById("modalContent").innerHTML = "";
+function message(text) {
+  const el = document.getElementById("message");
+  if (el) el.innerHTML = text;
 }
 
-document.addEventListener("click", event => {
-    if (event.target.id === "modal") {
-        closeModal();
-    }
-});
-
-document.addEventListener("keydown", event => {
-    if (event.key === "Escape") {
-        closeModal();
-    }
-});
-
-/* ---------- MENU ---------- */
-
-function showStart() {
-    populateStartingLocations();
-    showScreen("startScreen");
-}
-
-function showLeaderboard() {
-    renderLeaderboard();
-    showScreen("leaderboardScreen");
-}
-
-function showHowToPlay() {
-    openModal(`
-        <h2>HOW TO PLAY</h2>
-
-        <p>Buy goods at a low price and travel to another city to sell them
-        for a profit.</p>
-
-        <ul>
-            <li>You can carry a maximum of 100 items.</li>
-            <li>Each city has different prices.</li>
-            <li>You have five visits per day.</li>
-            <li>Travel uses one visit.</li>
-            <li>Deposit money in the bank to protect it from losses.</li>
-            <li>Visit the hospital when your health is low.</li>
-            <li>The game ends when you reach the selected number of days.</li>
-        </ul>
-
-        <button onclick="closeModal()">CLOSE</button>
-    `);
-}
-
-function showSettings() {
-    openModal(`
-        <h2>SETTINGS</h2>
-
-        <label>
-            <input
-                id="soundSetting"
-                type="checkbox"
-                ${settings.sound ? "checked" : ""}
-                style="width:auto;margin-right:8px;"
-            >
-            Enable sound
-        </label>
-
-        <br>
-
-        <label>
-            <input
-                id="autosaveSetting"
-                type="checkbox"
-                ${settings.autosave ? "checked" : ""}
-                style="width:auto;margin-right:8px;"
-            >
-            Enable autosave
-        </label>
-
-        <br><br>
-
-        <button onclick="saveSettingsFromModal()">SAVE SETTINGS</button>
-        <button onclick="clearSavedGame()">CLEAR SAVED GAME</button>
-        <button onclick="closeModal()">CLOSE</button>
-    `);
-}
-
-function saveSettingsFromModal() {
-    settings.sound = document.getElementById("soundSetting").checked;
-    settings.autosave = document.getElementById("autosaveSetting").checked;
-
-    localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
-
-    closeModal();
-    message("Settings saved.");
-}
-
-function loadSettings() {
-    try {
-        return {
-            sound: true,
-            autosave: true,
-            ...JSON.parse(localStorage.getItem(SETTINGS_KEY) || "{}")
-        };
-    } catch {
-        return {
-            sound: true,
-            autosave: true
-        };
-    }
-}
-
-/* ---------- STARTING LOCATIONS ---------- */
-
-function populateStartingLocations() {
-    const select = document.getElementById("startingLocation");
-
-    if (!select || select.options.length > 0) {
-        return;
-    }
-
-    LOCATIONS.forEach((location, index) => {
-        const option = document.createElement("option");
-
-        option.value = index;
-        option.textContent =
-            `${location.city}, ${location.country}`;
-
-        select.appendChild(option);
-    });
-}
-
-/* ---------- GAME START ---------- */
-
-function startGame() {
-    const nameInput = document.getElementById("playerName");
-    const lengthInput = document.getElementById("gameLength");
-    const locationInput = document.getElementById("startingLocation");
-
-    const username = nameInput.value.trim();
-
-    if (!username) {
-        alert("Please enter a player name.");
-        nameInput.focus();
-        return;
-    }
-
-    const length = Number(lengthInput.value);
-    const locationIndex = Number(locationInput.value);
-    const selectedLocation = LOCATIONS[locationIndex];
-
-    if (!selectedLocation) {
-        alert("Please select a starting location.");
-        return;
-    }
-
-    game = newGameState(
-        username,
-        length,
-        createLocation(selectedLocation)
-    );
-
-    generateMarket();
-    renderGame();
-    showScreen("gameScreen");
-
-    message(
-        `Welcome, ${escapeHtml(game.username)}. ` +
-        `You are starting in ${escapeHtml(locationName(game.location))}.`
-    );
-
-    saveGame();
+function locationName(location) {
+  if (!location) return "Unknown";
+  return `${location.city}, ${location.country} • ${location.district}`;
 }
 
 function createLocation(location) {
-    return {
-        country: location.country,
-        city: location.city,
-        district: location.district ||
-            location.districts[Math.floor(Math.random() * location.districts.length)],
-        districts: [...location.districts]
-    };
+  return {
+    country: location.country,
+    city: location.city,
+    district: location.district || location.districts[random(0, location.districts.length - 1)],
+    districts: [...location.districts]
+  };
 }
 
-/* ---------- GAME DISPLAY ---------- */
-
-function renderGame() {
-    if (!game) {
-        return;
-    }
-
-    const inventoryTotal = getInventoryTotal();
-
-    document.getElementById("statLocation").textContent =
-        locationName(game.location);
-
-    document.getElementById("statDay").textContent =
-        `${game.day} / ${game.gameLength}`;
-
-    document.getElementById("statVisits").textContent =
-        `${game.visits} / ${game.maxVisits}`;
-
-    document.getElementById("statCash").textContent =
-        money(game.cash);
-
-    document.getElementById("statBank").textContent =
-        money(game.bank);
-
-    document.getElementById("statHealth").textContent =
-        `${Math.max(0, game.health)}%`;
-
-    document.getElementById("statCapacity").textContent =
-        `${inventoryTotal} / ${game.capacity}`;
-
-    if (typeof renderMarket === "function") {
-        renderMarket();
-    }
-
-    if (settings.autosave) {
-        saveGame();
-    }
+function inventoryCount() {
+  if (!game?.inventory) return 0;
+  return Object.values(game.inventory).reduce((total, amount) => total + (Number(amount) || 0), 0);
 }
 
 function getInventoryTotal() {
-    if (!game || !game.inventory) {
-        return 0;
-    }
-
-    return Object.values(game.inventory)
-        .reduce((total, amount) => total + Number(amount || 0), 0);
+  return inventoryCount();
 }
 
-/* ---------- TRAVEL ---------- */
+function generateMarket() {
+  if (!game) return;
+  game.prices = {};
+  ITEMS.forEach(item => {
+    let price = random(item.min, item.max);
+    if (chance(12)) price *= random(150, 250) / 100;
+    if (chance(12)) price *= random(35, 70) / 100;
+    game.prices[item.name] = Math.max(10, Math.floor(price));
+  });
+}
+
+function renderMarket() {
+  const container = document.getElementById("marketRows");
+  if (!container || !game) return;
+  container.innerHTML = "";
+
+  ITEMS.forEach(item => {
+    const owned = game.inventory[item.name] || 0;
+    const price = game.prices[item.name] || 0;
+    const row = document.createElement("div");
+    row.className = "market-row";
+    row.innerHTML = `
+      <div><strong>${escapeHtml(item.name)}</strong><br><small>Carrying: ${owned}</small></div>
+      <div class="price">${money(price)}</div>
+      <div class="controls">
+        <button type="button" onclick="changeQuantity(${JSON.stringify(item.name)}, -1)">−</button>
+        <input id="qty-${item.name}" type="number" min="0" step="1" value="0" aria-label="Quantity of ${escapeHtml(item.name)}">
+        <button type="button" onclick="changeQuantity(${JSON.stringify(item.name)}, 1)">+</button>
+        <button type="button" onclick="buy(${JSON.stringify(item.name)})">BUY</button>
+        <button type="button" onclick="sell(${JSON.stringify(item.name)})">SELL</button>
+      </div>`;
+    container.appendChild(row);
+  });
+}
+
+function changeQuantity(item, amount) {
+  const input = document.getElementById("qty-" + item);
+  if (!input) return;
+  input.value = Math.max(0, (Number(input.value) || 0) + amount);
+}
+
+function getQuantity(itemName) {
+  const input = document.getElementById("qty-" + itemName);
+  if (!input) return 0;
+  const quantity = Number(input.value);
+  return Number.isFinite(quantity) ? Math.max(0, Math.floor(quantity)) : 0;
+}
+
+function buy(itemName) {
+  if (!game || game.gameOver) return;
+  const quantity = getQuantity(itemName);
+  if (quantity <= 0) return message("Choose how many units you want to buy.");
+
+  const available = game.capacity - inventoryCount();
+  if (quantity > available) return message(`You only have ${available} pocket spaces left.`);
+
+  const price = game.prices[itemName];
+  if (!Number.isFinite(price)) return message("That item is not available at this market.");
+  const total = price * quantity;
+  if (total > game.cash) return message("You don't have enough cash.");
+
+  game.cash -= total;
+  game.inventory[itemName] = (game.inventory[itemName] || 0) + quantity;
+  const input = document.getElementById("qty-" + itemName);
+  if (input) input.value = 0;
+  message(`Bought ${quantity} ${escapeHtml(itemName)} for ${money(total)}.`);
+  updateGame();
+}
+
+function sell(itemName) {
+  if (!game || game.gameOver) return;
+  const quantity = getQuantity(itemName);
+  const owned = game.inventory[itemName] || 0;
+  if (quantity <= 0) return message("Choose how many units you want to sell.");
+  if (quantity > owned) return message(`You only have ${owned} ${escapeHtml(itemName)}.`);
+
+  const price = game.prices[itemName];
+  if (!Number.isFinite(price)) return message("That item is not available at this market.");
+  const total = price * quantity;
+  game.cash += total;
+  game.inventory[itemName] -= quantity;
+  const input = document.getElementById("qty-" + itemName);
+  if (input) input.value = 0;
+  message(`Sold ${quantity} ${escapeHtml(itemName)} for ${money(total)}.`);
+  updateGame();
+}
 
 function openTravel() {
-    if (!game || game.gameOver) {
-        return;
-    }
+  if (!game || game.gameOver) return;
+  if (game.visits >= game.maxVisits) return message("You have no visits remaining today.");
 
-    const buttons = LOCATIONS.map((location, index) => {
-        const current =
-            location.city === game.location.city &&
-            location.country === game.location.country;
+  const buttons = LOCATIONS.map((location, index) => {
+    const current = location.city === game.location.city && location.country === game.location.country;
+    return `<button type="button" onclick="travelTo(${index})" ${current ? "disabled" : ""}>
+      ${escapeHtml(location.city)}, ${escapeHtml(location.country)} ${current ? "(CURRENT)" : ""}
+    </button>`;
+  }).join("");
 
-        return `
-            <button
-                onclick="travelTo(${index})"
-                ${current ? "disabled" : ""}
-            >
-                ${escapeHtml(location.city)}, ${escapeHtml(location.country)}
-                ${current ? "(CURRENT)" : ""}
-            </button>
-        `;
-    }).join("");
-
-    openModal(`
-        <h2>TRAVEL</h2>
-        <p>Choose your next destination.</p>
-        <div class="location-list">${buttons}</div>
-        <button onclick="closeModal()">CANCEL</button>
-    `);
+  openModal(`<h2>✈ TRAVEL</h2><p>Choose your next destination. Every move uses one visit.</p><div class="location-list">${buttons}</div><button type="button" onclick="closeModal()">CANCEL</button>`);
 }
 
 function travelTo(locationIndex) {
-    if (!game || game.gameOver) {
-        return;
-    }
-
-    if (game.visits >= game.maxVisits) {
-        message("You have no visits remaining today.");
-        closeModal();
-        return;
-    }
-
-    const destination = LOCATIONS[locationIndex];
-
-    if (!destination) {
-        return;
-    }
-
-    if (
-        destination.city === game.location.city &&
-        destination.country === game.location.country
-    ) {
-        message("You are already in that location.");
-        return;
-    }
-
-    game.location = createLocation(destination);
-    game.visits += 1;
-
-    generateMarket();
+  if (!game || game.gameOver) return;
+  if (game.visits >= game.maxVisits) {
+    message("You have no visits remaining today.");
     closeModal();
+    return;
+  }
 
-    message(
-        `You travelled to ${escapeHtml(locationName(game.location))}.`
-    );
+  const destination = LOCATIONS[locationIndex];
+  if (!destination) return;
+  if (destination.city === game.location.city && destination.country === game.location.country) {
+    message("You are already in that location.");
+    return;
+  }
 
-    finishVisit();
+  const international = destination.country !== game.location.country;
+  const travelCost = international ? random(250, 1800) : random(10, 150);
+  if (travelCost > game.cash) return message(`You need ${money(travelCost)} for this trip.`);
+
+  game.cash -= travelCost;
+  game.location = createLocation(destination);
+  game.visits += 1;
+  generateMarket();
+  closeModal();
+  message(`✈ Travelled to <strong>${escapeHtml(locationName(game.location))}</strong>.<br>Travel cost: ${money(travelCost)}`);
+  updateGame();
+
+  const policeChance = international ? 15 : 7;
+  if (chance(policeChance)) {
+    setTimeout(policeEncounter, 400);
+  } else if (chance(20)) {
+    setTimeout(randomEvent, 400);
+  }
+
+  finishVisit();
 }
 
-/* ---------- BANK ---------- */
+function policeEncounter() {
+  if (!game || game.gameOver) return;
+  openModal(`<h2 class="danger">🚨 POLICE ENCOUNTER</h2><p>An officer has spotted you.</p><p>What do you do?</p><button type="button" onclick="runFromPolice()">🏃 RUN</button><button type="button" onclick="fightPolice()">👊 FIGHT</button>`);
+}
+
+function runFromPolice() {
+  closeModal();
+  if (chance(62)) message("You managed to get away before they could stop you.");
+  else busted();
+  updateGame();
+}
+
+function fightPolice() {
+  closeModal();
+  if (chance(48)) {
+    const damage = random(8, 25);
+    game.health = Math.max(1, game.health - damage);
+    message(`You fought your way out.<br>You lost ${damage} health.`);
+  } else {
+    busted();
+  }
+  updateGame();
+}
+
+function busted() {
+  if (!game) return;
+  const cashLoss = Math.min(game.cash, Math.floor(game.cash * random(20, 70) / 100));
+  game.cash -= cashLoss;
+  let stashLoss = 0;
+
+  Object.keys(game.inventory).forEach(item => {
+    if (game.inventory[item] > 0 && chance(65)) {
+      const loss = Math.max(1, Math.floor(game.inventory[item] * random(20, 70) / 100));
+      game.inventory[item] -= Math.min(loss, game.inventory[item]);
+      stashLoss += loss;
+    }
+  });
+
+  message(`<strong class="danger">BUSTED!</strong><br>Police confiscated ${money(cashLoss)} and ${stashLoss} units of your stash.<br><br>Your bank account was untouched.`);
+  updateGame();
+}
+
+function randomEvent() {
+  if (!game || game.gameOver) return;
+
+  const events = [
+    { weight: 10, run: () => marketEvent("🚨 HUGE RAID", random(25, 80), true, "Authorities raided several major") },
+    { weight: 10, run: () => marketEvent("📉 MARKET FLOOD", random(25, 70), false, "A huge shipment of") },
+    { weight: 8, run: () => marketEvent("📈 SUDDEN DEMAND", random(40, 120), true, "Demand for") },
+    { weight: 8, run: () => marketEvent("🚚 SUPPLY SURGE", random(20, 60), false, "An unexpected shipment of") },
+    { weight: 7, run: () => marketEvent("🔥 SHORTAGE", random(30, 90), true, "Supplies of") },
+    { weight: 7, run: () => marketEvent("📰 BAD BATCH", random(20, 55), false, "Reports of contaminated") },
+    { weight: 6, run: () => marketEvent("🌐 INTERNATIONAL CRISIS", random(50, 150), true, "International supply problems have disrupted the") },
+    { weight: 6, run: () => marketEvent("🛃 BORDER CRACKDOWN", random(30, 80), false, "Increased inspections have disrupted the") },
+    { weight: 5, run: () => {
+      const item = ITEMS[random(0, ITEMS.length - 1)];
+      const amount = random(1, 4);
+      const room = game.capacity - inventoryCount();
+      if (room <= 0) {
+        const cash = random(50, 250);
+        game.cash += cash;
+        return `🎒 You found a package, but your pockets are full.<br><br>You sold it for ${money(cash)}.`;
+      }
+      const found = Math.min(amount, room);
+      game.inventory[item.name] = (game.inventory[item.name] || 0) + found;
+      return `🎒 RANDOM FIND<br>You found ${found} unit${found === 1 ? "" : "s"} of ${escapeHtml(item.name)}.`;
+    }},
+    { weight: 4, run: () => {
+      const amount = random(100, 600);
+      game.cash += amount;
+      return `💵 LUCKY BREAK<br>You found ${money(amount)} tucked away in an abandoned bag.`;
+    }},
+    { weight: 4, run: () => {
+      const amount = Math.min(game.cash, random(50, 500));
+      if (amount <= 0) return `🥷 ROBBERY ATTEMPT<br>Someone tried to rob you, but you had no cash worth taking.`;
+      game.cash -= amount;
+      return `🥷 ROBBED<br>Someone caught you off guard and took ${money(amount)}.<br><br>Your bank money is safe.`;
+    }}
+  ];
+
+  const total = events.reduce((sum, event) => sum + event.weight, 0);
+  let roll = Math.random() * total;
+  let selected = events[events.length - 1];
+  for (const event of events) {
+    roll -= event.weight;
+    if (roll <= 0) { selected = event; break; }
+  }
+  message(selected.run());
+  updateGame();
+}
+
+function marketEvent(title, change, increase, lead) {
+  const item = ITEMS[random(0, ITEMS.length - 1)];
+  const multiplier = increase ? 1 + change / 100 : 1 - change / 100;
+  game.prices[item.name] = Math.max(10, Math.floor((game.prices[item.name] || item.min) * multiplier));
+  const verb = increase ? "up" : "dropped";
+  return `${title}<br>${lead} ${escapeHtml(item.name)} suppliers.<br><br><strong>${escapeHtml(item.name)} prices are ${verb} ${change}%!</strong>`;
+}
+
+function finishVisit() {
+  if (!game || game.gameOver) return;
+
+  if (game.visits >= game.maxVisits) {
+    if (game.day >= game.gameLength) {
+      endGame("You reached the end of the game.");
+      return;
+    }
+    game.day += 1;
+    game.visits = 0;
+    generateMarket();
+    message(`A new day begins: day ${game.day}.`);
+  }
+  updateGame();
+}
+
+function updateGame() {
+  renderGame();
+  if (settings.autosave) saveGame();
+}
+
+function openModal(html) {
+  const modal = document.getElementById("modal");
+  const content = document.getElementById("modalContent");
+  if (!modal || !content) return;
+  content.innerHTML = html;
+  modal.classList.add("active");
+  const firstControl = content.querySelector("button, input, select");
+  if (firstControl) firstControl.focus();
+}
+
+function closeModal() {
+  const modal = document.getElementById("modal");
+  const content = document.getElementById("modalContent");
+  if (modal) modal.classList.remove("active");
+  if (content) content.innerHTML = "";
+}
+
+function showStart() {
+  populateStartingLocations();
+  showScreen("startScreen");
+}
+
+function showLeaderboard() {
+  renderLeaderboard();
+  showScreen("leaderboardScreen");
+}
+
+function showHowToPlay() {
+  openModal(`<h2>HOW TO PLAY</h2><p>Buy goods at a low price and travel to another city to sell them for a profit.</p><ul><li>You can carry a maximum of 100 items.</li><li>Each city has different prices.</li><li>You have five visits per day.</li><li>Travel uses one visit.</li><li>Deposit money in the bank to protect it from losses.</li><li>Visit the hospital when your health is low.</li><li>The game ends when you complete the selected number of days.</li></ul><button type="button" onclick="closeModal()">CLOSE</button>`);
+}
+
+function showSettings() {
+  openModal(`<h2>SETTINGS</h2>
+    <label><input id="soundSetting" type="checkbox" ${settings.sound ? "checked" : ""} style="width:auto;margin-right:8px;">Enable sound</label><br>
+    <label><input id="autosaveSetting" type="checkbox" ${settings.autosave ? "checked" : ""} style="width:auto;margin-right:8px;">Enable autosave</label><br><br>
+    <button type="button" onclick="saveSettingsFromModal()">SAVE SETTINGS</button>
+    <button type="button" onclick="clearSavedGame()">CLEAR SAVED GAME</button>
+    <button type="button" onclick="closeModal()">CLOSE</button>`);
+}
+
+function saveSettingsFromModal() {
+  const sound = document.getElementById("soundSetting");
+  const autosave = document.getElementById("autosaveSetting");
+  settings.sound = !!sound?.checked;
+  settings.autosave = !!autosave?.checked;
+  storageSet(SETTINGS_KEY, JSON.stringify(settings));
+  closeModal();
+  message("Settings saved.");
+}
+
+function loadSettings() {
+  try {
+    return { sound: true, autosave: true, ...JSON.parse(storageGet(SETTINGS_KEY, "{}")) };
+  } catch {
+    return { sound: true, autosave: true };
+  }
+}
+
+function populateStartingLocations() {
+  const select = document.getElementById("startingLocation");
+  if (!select || select.options.length) return;
+  LOCATIONS.forEach((location, index) => {
+    const option = document.createElement("option");
+    option.value = index;
+    option.textContent = `${location.city}, ${location.country}`;
+    select.appendChild(option);
+  });
+}
+
+function startGame() {
+  const nameInput = document.getElementById("playerName");
+  const lengthInput = document.getElementById("gameLength");
+  const locationInput = document.getElementById("startingLocation");
+  const username = nameInput.value.trim();
+  const length = Number(lengthInput.value);
+  const locationIndex = Number(locationInput.value);
+  const selectedLocation = LOCATIONS[locationIndex];
+
+  if (!username) {
+    alert("Please enter a player name.");
+    nameInput.focus();
+    return;
+  }
+  if (!Number.isInteger(length) || length < 1) return alert("Please select a valid game length.");
+  if (!selectedLocation) return alert("Please select a starting location.");
+
+  game = newGameState(username, length, createLocation(selectedLocation));
+  generateMarket();
+  showScreen("gameScreen");
+  message(`Welcome, ${escapeHtml(game.username)}. You are starting in ${escapeHtml(locationName(game.location))}.`);
+  updateGame();
+}
+
+function renderGame() {
+  if (!game) return;
+  const fields = {
+    statLocation: locationName(game.location),
+    statDay: `${game.day} / ${game.gameLength}`,
+    statVisits: `${game.visits} / ${game.maxVisits}`,
+    statCash: money(game.cash),
+    statBank: money(game.bank),
+    statHealth: `${Math.max(0, game.health)}%`,
+    statCapacity: `${getInventoryTotal()} / ${game.capacity}`
+  };
+  Object.entries(fields).forEach(([id, value]) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
+  });
+  renderMarket();
+}
 
 function openBank() {
-    if (!game || game.gameOver) {
-        return;
-    }
-
-    openModal(`
-        <h2>BANK</h2>
-
-        <div class="bank-amount">
-            Current balance: ${money(game.bank)}
-        </div>
-
-        <label>Amount</label>
-        <input
-            id="bankAmount"
-            type="number"
-            min="0"
-            step="1"
-            placeholder="Enter amount"
-        >
-
-        <button onclick="depositMoney()">DEPOSIT</button>
-        <button onclick="withdrawMoney()">WITHDRAW</button>
-        <button onclick="closeModal()">CLOSE</button>
-    `);
+  if (!game || game.gameOver) return;
+  openModal(`<h2>BANK</h2><div class="bank-amount">Current balance: ${money(game.bank)}</div><label>Amount</label><input id="bankAmount" type="number" min="1" step="1" placeholder="Enter amount"><button type="button" onclick="depositMoney()">DEPOSIT</button><button type="button" onclick="withdrawMoney()">WITHDRAW</button><button type="button" onclick="closeModal()">CLOSE</button>`);
 }
 
 function getBankAmount() {
-    const amount = Number(document.getElementById("bankAmount").value);
-
-    if (!Number.isFinite(amount) || amount <= 0) {
-        return 0;
-    }
-
-    return Math.floor(amount);
+  const input = document.getElementById("bankAmount");
+  const amount = Number(input?.value);
+  return Number.isFinite(amount) && amount > 0 ? Math.floor(amount) : 0;
 }
 
 function depositMoney() {
-    const amount = getBankAmount();
-
-    if (!amount) {
-        message("Enter a valid deposit amount.");
-        return;
-    }
-
-    if (amount > game.cash) {
-        message("You do not have enough cash.");
-        return;
-    }
-
-    game.cash -= amount;
-    game.bank += amount;
-
-    closeModal();
-    renderGame();
-    message(`You deposited ${money(amount)}.`);
+  const amount = getBankAmount();
+  if (!amount) return message("Enter a valid deposit amount.");
+  if (amount > game.cash) return message("You do not have enough cash.");
+  game.cash -= amount;
+  game.bank += amount;
+  closeModal();
+  message(`You deposited ${money(amount)}.`);
+  updateGame();
 }
 
 function withdrawMoney() {
-    const amount = getBankAmount();
-
-    if (!amount) {
-        message("Enter a valid withdrawal amount.");
-        return;
-    }
-
-    if (amount > game.bank) {
-        message("You do not have enough money in the bank.");
-        return;
-    }
-
-    game.bank -= amount;
-    game.cash += amount;
-
-    closeModal();
-    renderGame();
-    message(`You withdrew ${money(amount)}.`);
+  const amount = getBankAmount();
+  if (!amount) return message("Enter a valid withdrawal amount.");
+  if (amount > game.bank) return message("You do not have enough money in the bank.");
+  game.bank -= amount;
+  game.cash += amount;
+  closeModal();
+  message(`You withdrew ${money(amount)}.`);
+  updateGame();
 }
 
-/* ---------- HOSPITAL ---------- */
-
 function openHospital() {
-    if (!game || game.gameOver) {
-        return;
-    }
-
-    const cost = Math.max(100, (100 - game.health) * 25);
-
-    openModal(`
-        <h2>HOSPITAL</h2>
-
-        <p>Health: <strong>${game.health}%</strong></p>
-        <p>Full treatment cost: <strong>${money(cost)}</strong></p>
-
-        <button onclick="healPlayer()">GET TREATMENT</button>
-        <button onclick="closeModal()">CLOSE</button>
-    `);
+  if (!game || game.gameOver) return;
+  const cost = Math.max(100, (100 - game.health) * 25);
+  openModal(`<h2>HOSPITAL</h2><p>Health: <strong>${game.health}%</strong></p><p>Full treatment cost: <strong>${money(cost)}</strong></p><button type="button" onclick="healPlayer()">GET TREATMENT</button><button type="button" onclick="closeModal()">CLOSE</button>`);
 }
 
 function healPlayer() {
-    if (game.health >= 100) {
-        message("You are already at full health.");
-        return;
-    }
-
-    const cost = Math.max(100, (100 - game.health) * 25);
-
-    if (game.cash < cost) {
-        message("You cannot afford hospital treatment.");
-        return;
-    }
-
-    game.cash -= cost;
-    game.health = 100;
-
-    closeModal();
-    renderGame();
-    message(`Treatment complete. You paid ${money(cost)}.`);
-}
-
-/* ---------- VISITS AND GAME OVER ---------- */
-
-function finishVisit() {
-    if (!game || game.gameOver) {
-        return;
-    }
-
-    if (game.visits >= game.maxVisits) {
-        game.day += 1;
-        game.visits = 0;
-
-        if (game.day > game.gameLength) {
-            endGame("You reached the end of the game.");
-            return;
-        }
-
-        generateMarket();
-        message(`A new day begins: day ${game.day}.`);
-    }
-
-    renderGame();
-}
-
-function endGame(reason) {
-    if (!game || game.gameOver) {
-        return;
-    }
-
-    game.gameOver = true;
-
-    const score = calculateScore();
-    addLeaderboardEntry({
-        name: game.username,
-        score,
-        day: game.day,
-        location: locationName(game.location),
-        date: new Date().toISOString()
-    });
-
-    localStorage.removeItem(SAVED_GAME_KEY);
-
-    openModal(`
-        <h2>GAME OVER</h2>
-        <p>${escapeHtml(reason)}</p>
-        <p>Final cash: <strong>${money(game.cash)}</strong></p>
-        <p>Bank balance: <strong>${money(game.bank)}</strong></p>
-        <p>Final score: <strong>${money(score)}</strong></p>
-
-        <button onclick="closeModal(); showLeaderboard();">
-            VIEW LEADERBOARD
-        </button>
-
-        <button onclick="closeModal(); showScreen('menuScreen');">
-            MAIN MENU
-        </button>
-    `);
+  if (!game || game.gameOver) return;
+  if (game.health >= 100) return message("You are already at full health.");
+  const cost = Math.max(100, (100 - game.health) * 25);
+  if (game.cash < cost) return message("You cannot afford hospital treatment.");
+  game.cash -= cost;
+  game.health = 100;
+  closeModal();
+  message(`Treatment complete. You paid ${money(cost)}.`);
+  updateGame();
 }
 
 function calculateScore() {
-    if (!game) {
-        return 0;
-    }
-
-    return Math.max(
-        0,
-        Math.floor(game.cash + game.bank + getInventoryValue())
-    );
+  if (!game) return 0;
+  return Math.max(0, Math.floor(game.cash + game.bank + getInventoryValue()));
 }
 
 function getInventoryValue() {
-    if (!game) {
-        return 0;
-    }
-
-    return Object.entries(game.inventory || {})
-        .reduce((total, [itemName, quantity]) => {
-            const price = game.prices[itemName] || 0;
-            return total + price * quantity;
-        }, 0);
+  if (!game) return 0;
+  return Object.entries(game.inventory || {}).reduce((total, [itemName, quantity]) => total + (game.prices[itemName] || 0) * (Number(quantity) || 0), 0);
 }
 
-/* ---------- LEADERBOARD ---------- */
+function endGame(reason = "Game over.") {
+  if (!game || game.gameOver) return;
+  game.gameOver = true;
+  const score = calculateScore();
+  addLeaderboardEntry({ name: game.username, score, day: game.day, location: locationName(game.location), date: new Date().toISOString() });
+  storageRemove(SAVED_GAME_KEY);
+  openModal(`<h2>GAME OVER</h2><p>${escapeHtml(reason)}</p><p>Final cash: <strong>${money(game.cash)}</strong></p><p>Bank balance: <strong>${money(game.bank)}</strong></p><p>Final score: <strong>${money(score)}</strong></p><button type="button" onclick="closeModal(); showLeaderboard();">VIEW LEADERBOARD</button><button type="button" onclick="closeModal(); showScreen('menuScreen'); renderTopTen();">MAIN MENU</button>`);
+}
 
 function loadLeaderboard() {
-    try {
-        const scores = JSON.parse(
-            localStorage.getItem(LEADERBOARD_KEY) || "[]"
-        );
-
-        return Array.isArray(scores) ? scores : [];
-    } catch {
-        return [];
-    }
+  try {
+    const scores = JSON.parse(storageGet(LEADERBOARD_KEY, "[]"));
+    return Array.isArray(scores) ? scores : [];
+  } catch { return []; }
 }
 
 function saveLeaderboard(scores) {
-    localStorage.setItem(
-        LEADERBOARD_KEY,
-        JSON.stringify(scores)
-    );
+  storageSet(LEADERBOARD_KEY, JSON.stringify(scores));
 }
 
 function addLeaderboardEntry(entry) {
-    const scores = loadLeaderboard();
-
-    scores.push(entry);
-
-    scores.sort((a, b) => Number(b.score) - Number(a.score));
-
-    saveLeaderboard(scores.slice(0, 100));
+  const scores = loadLeaderboard();
+  scores.push(entry);
+  scores.sort((a, b) => Number(b.score) - Number(a.score));
+  saveLeaderboard(scores.slice(0, 100));
 }
 
 function renderLeaderboard() {
-    const scores = loadLeaderboard();
-    const container = document.getElementById("leaderboardRows");
-
-    if (!scores.length) {
-        container.innerHTML = `
-            <p style="text-align:center;color:#aaa;">
-                No scores recorded yet.
-            </p>
-        `;
-        return;
-    }
-
-    container.innerHTML = `
-        <div class="score-row">
-            <b>#</b>
-            <b>PLAYER</b>
-            <b>SCORE</b>
-        </div>
-    `;
-
-    scores.forEach((entry, index) => {
-        const row = document.createElement("div");
-        row.className = "score-row";
-
-        row.innerHTML = `
-            <span>${index + 1}</span>
-            <span>${escapeHtml(entry.name)}</span>
-            <strong>${money(entry.score)}</strong>
-        `;
-
-        container.appendChild(row);
-    });
+  const container = document.getElementById("leaderboardRows");
+  if (!container) return;
+  const scores = loadLeaderboard();
+  if (!scores.length) {
+    container.innerHTML = `<p style="text-align:center;color:#aaa;">No scores recorded yet.</p>`;
+    return;
+  }
+  container.innerHTML = `<div class="score-row"><b>#</b><b>PLAYER</b><b>SCORE</b></div>`;
+  scores.forEach((entry, index) => {
+    const row = document.createElement("div");
+    row.className = "score-row";
+    row.innerHTML = `<span>${index + 1}</span><span>${escapeHtml(entry.name)}</span><strong>${money(entry.score)}</strong>`;
+    container.appendChild(row);
+  });
 }
 
 function renderTopTen() {
-    const container = document.getElementById("top10");
-    if (!container) {
-        return;
-    }
-
-    const scores = loadLeaderboard().slice(0, 10);
-
-    container.innerHTML = `
-        <div class="score-row">
-            <b>#</b>
-            <b>PLAYER</b>
-            <b>SCORE</b>
-        </div>
-    `;
-
-    if (!scores.length) {
-        container.innerHTML += `
-            <div style="padding:12px;color:#aaa;text-align:center;">
-                No scores recorded yet.
-            </div>
-        `;
-        return;
-    }
-
-    scores.forEach((entry, index) => {
-        container.innerHTML += `
-            <div class="score-row">
-                <span>${index + 1}</span>
-                <span>${escapeHtml(entry.name)}</span>
-                <strong>${money(entry.score)}</strong>
-            </div>
-        `;
-    });
+  const container = document.getElementById("top10");
+  if (!container) return;
+  const scores = loadLeaderboard().slice(0, 10);
+  container.innerHTML = `<div class="score-row"><b>#</b><b>PLAYER</b><b>SCORE</b></div>`;
+  if (!scores.length) {
+    container.innerHTML += `<div style="padding:12px;color:#aaa;text-align:center;">No scores recorded yet.</div>`;
+    return;
+  }
+  scores.forEach((entry, index) => {
+    container.innerHTML += `<div class="score-row"><span>${index + 1}</span><span>${escapeHtml(entry.name)}</span><strong>${money(entry.score)}</strong></div>`;
+  });
 }
 
-/* ---------- SAVE AND LOAD ---------- */
-
 function saveGame() {
-    if (!game || game.gameOver) {
-        return;
-    }
-
-    localStorage.setItem(
-        SAVED_GAME_KEY,
-        JSON.stringify(game)
-    );
+  if (!game || game.gameOver) return;
+  storageSet(SAVED_GAME_KEY, JSON.stringify(game));
 }
 
 function loadSavedGame() {
-    try {
-        const saved = JSON.parse(
-            localStorage.getItem(SAVED_GAME_KEY) || "null"
-        );
-
-        if (!saved || saved.gameOver) {
-            return null;
-        }
-
-        return saved;
-    } catch {
-        return null;
-    }
+  try {
+    const saved = JSON.parse(storageGet(SAVED_GAME_KEY, "null"));
+    if (!saved || saved.gameOver || !saved.location) return null;
+    return saved;
+  } catch { return null; }
 }
 
 function continueSavedGame() {
-    const saved = loadSavedGame();
-
-    if (!saved) {
-        message("There is no saved game.");
-        return;
-    }
-
-    game = saved;
-    renderGame();
-    showScreen("gameScreen");
-    message("Saved game loaded.");
+  const saved = loadSavedGame();
+  if (!saved) {
+    closeModal();
+    message("There is no saved game.");
+    return;
+  }
+  game = saved;
+  closeModal();
+  showScreen("gameScreen");
+  renderGame();
+  message("Saved game loaded.");
 }
 
 function clearSavedGame() {
-    localStorage.removeItem(SAVED_GAME_KEY);
-    closeModal();
-    message("Saved game cleared.");
+  storageRemove(SAVED_GAME_KEY);
+  closeModal();
+  message("Saved game cleared.");
 }
 
-/* ---------- INITIALIZATION ---------- */
+document.addEventListener("click", event => {
+  if (event.target?.id === "modal") closeModal();
+});
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") closeModal();
+});
 
 document.addEventListener("DOMContentLoaded", () => {
-    populateStartingLocations();
-    renderTopTen();
-
-    const savedGame = loadSavedGame();
-
-    if (savedGame) {
-        const menu = document.querySelector(".menu");
-
-        if (menu && !document.getElementById("continueButton")) {
-            const button = document.createElement("button");
-
-            button.id = "continueButton";
-            button.textContent = "CONTINUE SAVED GAME";
-            button.onclick = continueSavedGame;
-
-            menu.insertBefore(button, menu.children[4]);
-        }
-    }
+  populateStartingLocations();
+  renderTopTen();
+  const savedGame = loadSavedGame();
+  const menu = document.querySelector("#menuScreen .menu");
+  if (savedGame && menu && !document.getElementById("continueButton")) {
+    const button = document.createElement("button");
+    button.id = "continueButton";
+    button.textContent = "CONTINUE SAVED GAME";
+    button.onclick = continueSavedGame;
+    const playButton = menu.querySelector('button[onclick="showStart()"]');
+    if (playButton) menu.insertBefore(button, playButton);
+    else menu.appendChild(button);
+  }
 });
+
 </script>
 
 </body>
